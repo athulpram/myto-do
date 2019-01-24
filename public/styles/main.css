@@ -1,0 +1,14 @@
+.mainDiv {
+  display: flex;
+  height: 675px;
+}
+
+body {
+  margin: 0px;
+}
+
+.headerDiv {
+  height: 40px;
+  width: auto;
+  background: navy;
+}

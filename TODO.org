@@ -2,4 +2,16 @@
 ** DONE Need to create a directory structure
 
 * Server.js
-** TODO start a simple server
+** DONE start a simple server
+
+* index.html
+** TODO create basic structure of homepage.
+
+* app.js
+** DONE Created a simple request handler
+
+* load data
+** DONE created funtions to cache data at first
+
+* webFramework.js
+** TODO create a webFramework for app(request handler)

@@ -1,0 +1,17 @@
+.signupDiv {
+  width: 50%;
+  height: 100%;
+  background-color: aqua;
+}
+
+.loginDiv {
+  width: 50%;
+  height: 100%;
+  background-color: blueviolet;
+}
+
+.loginField {
+  height: 30px;
+  margin: 2px;
+  
+}
