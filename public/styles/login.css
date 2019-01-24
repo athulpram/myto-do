@@ -13,5 +13,9 @@
 .loginField {
   height: 30px;
   margin: 2px;
-  
+}
+
+.signupField {
+  height: 30px;
+  margin: 2px;
 }

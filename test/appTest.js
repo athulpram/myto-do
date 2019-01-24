@@ -2,50 +2,57 @@ const { initializeServer, requestHandler } = require("./../src/app.js");
 const assert = require("assert");
 
 const files = {
-  "./public/index.html": "This is index.html"
+  "./public/index.html": "This is index.html",
+  "./private/userData.json": '{}'
 };
 
 const dummyFs = {
-  readFileSync: function(filePath) {
+  readFileSync: function (filePath) {
     return files[filePath];
   },
-  readdirSync: function(directory) {
-    return Object.keys(files).map(filePath => filePath.split("/")[2]);
+  readdirSync: function (directory) {
+    return ['index.html'];
   }
 };
 
-let res = {
+const res = {
   content: undefined,
-  write: function(content) {
+  write: function (content) {
     this.content = content;
   },
   statusCode: undefined,
   statusMessage: undefined
 };
-let req = {
+
+const req = {
+  on: function (event, callback) {
+    callback();
+  },
   url: undefined
 };
 
 describe("requestHandler", () => {
   it("should change the response on res.end", () => {
-    res.end = function() {
+    res.end = function () {
       assert.equal(res.content, "This is index.html");
       assert.equal(res.statusCode, 200);
       assert.equal(res.statusMessage, "Ok");
     };
     initializeServer(dummyFs);
-    requestHandler({ url: "/" }, res);
+    req.url = "/";
+    requestHandler(req, res);
     res.end();
   });
 
   it("should change the response on res.end give 404", () => {
-    res.end = function() {
+    res.end = function () {
       assert.equal(res.content, "file not found");
       assert.equal(res.statusCode, 404);
       assert.equal(res.statusMessage, "error");
     };
     initializeServer(dummyFs);
-    requestHandler({ url: "/noFile" }, res);
+    req.url = "/invalidURL";
+    requestHandler(req, res);
     res.end();
   });
 });

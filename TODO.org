@@ -15,3 +15,6 @@
 
 * webFramework.js
 ** DONE create a webFramework for app(request handler)
+
+* register.js
+** DONE handle signup

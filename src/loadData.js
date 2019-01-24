@@ -1,7 +1,7 @@
-const cachedData = {};
+const  publicFiles= {};
 
 const readFile = function(filePath, fs) {
-  cachedData[filePath] = fs.readFileSync(filePath, "utf-8");
+  publicFiles[filePath] = fs.readFileSync(filePath, "utf-8");
 };
 
 const readData = function(directory, fs) {
@@ -9,7 +9,7 @@ const readData = function(directory, fs) {
   files.forEach(element => {
     readFile(element, fs);
   });
-  return cachedData;
+  return publicFiles;
 };
 
 const isDirectory = arg => !arg.includes(".");
