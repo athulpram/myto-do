@@ -1,7 +1,11 @@
 const loadData = require("./loadData.js");
+const WebFramework = require("./webFramework"); 
+const app = new WebFramework();
+
 let cachedData;
 const initializeServer = function(fs) {
   cachedData = loadData("./public", fs);
+  
 };
 
 const isFilePresent = file => Object.keys(cachedData).includes(file);
@@ -31,4 +35,6 @@ const getFilePath = url => {
   return url;
 };
 
-module.exports = { requestHandler, initializeServer };
+app.use(requestHandler);
+
+module.exports = { requestHandler:app.handleRequest.bind(app), initializeServer };
