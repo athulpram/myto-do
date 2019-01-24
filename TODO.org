@@ -1,0 +1,5 @@
+* Directory Structure
+** DONE Need to create a directory structure
+
+* Server.js
+** TODO start a simple server
