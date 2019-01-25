@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { handleSignup, handleLogin } = require("../src/register");
+const { handleSignup, handleLogin, handleLogout } = require("../src/register");
 
 const cachedData = {};
 const storeUserDetails = function(data) {
@@ -58,5 +58,17 @@ describe("handleLogin", function() {
     };
     req.body = `username=pram&password=something`;
     handleLogin(cachedData, req, res);
+  });
+});
+
+describe("handleLogout", () => {
+  it("should return a res with a expired cookie of username", () => {
+    res.end = () => {
+      assert.equal(
+        res["Set-Cookie"],
+        "username=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+      );
+    };
+    handleLogout(req, res);
   });
 });

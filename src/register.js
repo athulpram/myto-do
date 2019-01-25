@@ -1,16 +1,8 @@
 const { redirect } = require("./responder");
-const parsePostedData = function(postedData) {
-  let data = postedData.split("&");
-  let parsedData = {};
-  data.forEach(keyVal => {
-    [key, val] = keyVal.split("=");
-    parsedData[key] = val;
-  });
-  return parsedData;
-};
+const { parseArgs } = require("./util/util");
 
 const handleSignup = function(storeUserDetails, cachedData, req, res) {
-  const userDetails = parsePostedData(req.body);
+  const userDetails = parseArgs(req.body);
   const username = userDetails.username;
   const usersData = cachedData.users;
 
@@ -29,7 +21,7 @@ const isValidUsername = (userData, username) => {
 };
 
 const handleLogin = function(cachedData, req, res) {
-  const userDetails = parsePostedData(req.body);
+  const userDetails = parseArgs(req.body);
   const username = userDetails.username;
   const password = userDetails.password;
   const userData = cachedData.users;
@@ -44,7 +36,16 @@ const handleLogin = function(cachedData, req, res) {
   redirect(res, "/index.html");
 };
 
+const handleLogout = function(req, res) {
+  res.setHeader(
+    "Set-Cookie",
+    "username=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+  );
+  redirect(res, "/index.html");
+};
+
 module.exports = {
   handleSignup,
-  handleLogin
+  handleLogin,
+  handleLogout
 };

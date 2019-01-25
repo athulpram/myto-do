@@ -28,6 +28,9 @@ const res = {
 };
 
 const req = {
+  headers: {
+    cookie: ""
+  },
   on: function(event, callback) {
     callback();
   },
