@@ -1,4 +1,5 @@
-const  publicFiles= {};
+const publicFiles = {};
+const User = require("./user");
 
 const readFile = function(filePath, fs) {
   publicFiles[filePath] = fs.readFileSync(filePath, "utf-8");
@@ -24,10 +25,19 @@ const getFiles = function(directory, fs) {
     const filePath = createFilePath(directory, file);
     if (isDirectory(file)) {
       return getFiles(filePath, fs);
-    };
+    }
     return filePath;
   });
   return allFiles.join(",");
 };
 
-module.exports = readData;
+const loadUsers = function(userData, fs) {
+  const usersData = JSON.parse(fs.readFileSync(userData));
+  const userInstances = {};
+  Object.keys(usersData).forEach(username => {
+    userInstances[username] = new User(usersData[username]);
+  });
+  return userInstances;
+};
+
+module.exports = { loadFiles: readData, loadUsers };

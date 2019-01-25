@@ -1,26 +1,30 @@
-const loadData = require("./loadData.js");
-const { handleSignup } = require("./register.js");
+const { loadFiles, loadUsers } = require("./loadData.js");
+const { handleSignup, handleLogin } = require("./register.js");
+const { send } = require("./responder.js");
 const WebFramework = require("./webFramework");
 const app = new WebFramework();
 const cachedData = {};
 
-const writeToFile = function (fs, filePath, fileContents) {
-  fs.writeFile(filePath, fileContents, () => { });
-}
+const writeToFile = function(fs, filePath, fileContents) {
+  fs.writeFile(filePath, fileContents, () => {});
+};
 
-const initializeServer = function (fs) {
-  const userData = './private/userData.json';
-  cachedData.publicFiles = loadData("./public", fs);
-  cachedData.users = JSON.parse(fs.readFileSync(userData));
-  const storeUserDetails = writeToFile.bind(null, fs, userData)
+const initializeServer = function(fs) {
+  const userData = "./private/userData.json";
+  cachedData.publicFiles = loadFiles("./public", fs);
+  cachedData.users = loadUsers(userData, fs);
+  const storeUserDetails = writeToFile.bind(null, fs, userData);
   const signup = handleSignup.bind(null, storeUserDetails, cachedData);
+  const login = handleLogin.bind(null, cachedData);
 
   app.use(readPostedData);
   app.post("/signup", signup);
+  app.post("/login", login);
   app.use(requestHandler);
 };
 
-const isFilePresent = file => Object.keys(cachedData.publicFiles).includes(file);
+const isFilePresent = file =>
+  Object.keys(cachedData.publicFiles).includes(file);
 
 const requestHandler = (req, res) => {
   const url = getFilePath(req.url);
@@ -32,13 +36,6 @@ const requestHandler = (req, res) => {
   return;
 };
 
-const send = function (res, content, statusCode = 200, statusMessage = "Ok") {
-  res.write(content);
-  res.statusCode = statusCode;
-  res.statusMessage = statusMessage;
-  res.end();
-};
-
 const getFilePath = url => {
   if (url == "/") {
     url = "/index.html";
@@ -47,14 +44,17 @@ const getFilePath = url => {
   return url;
 };
 
-const readPostedData = function (req, res, next) {
-  let postedData = '';
-  req.on('data', (chunk) => {
+const readPostedData = function(req, res, next) {
+  let postedData = "";
+  req.on("data", chunk => {
     postedData = postedData + chunk;
   });
-  req.on('end', () => {
+  req.on("end", () => {
     req.body = postedData;
     next();
   });
-}
-module.exports = { requestHandler: app.handleRequest.bind(app), initializeServer };
+};
+module.exports = {
+  requestHandler: app.handleRequest.bind(app),
+  initializeServer
+};

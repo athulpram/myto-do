@@ -1,35 +1,62 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>myto-do</title>
+    <link rel="stylesheet" type="text/css" href="/styles/login.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/main.css" />
+    <script src="/scripts/login.js"></script>
+  </head>
 
-<head>
-  <title>myto-do</title>
-  <link rel="stylesheet" type="text/css" href="/styles/login.css" />
-  <link rel="stylesheet" type="text/css" href="/styles/main.css" />
-  <script src="/scripts/login.js"></script>
-</head>
+  <body>
+    <header class="headerDiv"></header>
 
-<body>
-  <header class="headerDiv"></header>
-
-  <div id="main" class="mainDiv">
-
-    <div id="signup" class="signupDiv">
-      <form action="/signup" method="POST">
-        <input type="text" name="firstName" placeholder="firstName" class="signupField" /><br />
-        <input type="text" name="lastName" placeholder="lastName" class="signupField" /><br />
-        <input type="text" name="username" placeholder="username" class="signupField" /><br />
-        <input type="password" name="password" placeholder="password" class="signupField" /><br />
-        <input type="submit" />
-      </form>
+    <div id="main" class="mainDiv">
+      <div id="signup" class="signupDiv">
+        <form action="/signup" method="POST">
+          <input
+            type="text"
+            name="firstName"
+            placeholder="firstName"
+            class="signupField"
+          /><br />
+          <input
+            type="text"
+            name="lastName"
+            placeholder="lastName"
+            class="signupField"
+          /><br />
+          <input
+            type="text"
+            name="username"
+            placeholder="username"
+            class="signupField"
+          /><br />
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            class="signupField"
+          /><br />
+          <input type="submit" value="Sign Up" />
+        </form>
+      </div>
+      <div id="login" class="loginDiv">
+        <form action="/login" method="POST">
+          <input
+            type="text"
+            name="username"
+            placeholder="username"
+            class="loginField"
+          /><br />
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            class="loginField"
+          /><br />
+          <input type="submit" value="Log In" />
+        </form>
+      </div>
     </div>
-    <div id="login" class="loginDiv">
-      <form action="/login" method="POST">
-        <input type="text" name="username" placeholder="username" class="loginField" /><br />
-        <input type="password" name="password" placeholder="password" class="loginField" /><br />
-        <input type="submit" />
-      </form>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>

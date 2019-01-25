@@ -1,4 +1,4 @@
-const loadData = require("../src/loadData.js");
+const { loadFiles } = require("../src/loadData.js");
 const assert = require("assert");
 
 const files = {
@@ -14,9 +14,9 @@ const dummyFs = {
   }
 };
 
-describe("loadData", () => {
+describe("loadFiles", () => {
   it("Should return object containing given file contents", () => {
-    const actualOutput = loadData("./public", dummyFs);
+    const actualOutput = loadFiles("./public", dummyFs);
     const expectedOutput = { "./public/index.html": "This is index.html" };
     assert.deepEqual(actualOutput, expectedOutput);
   });

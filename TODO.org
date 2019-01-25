@@ -18,3 +18,16 @@
 
 * register.js
 ** DONE handle signup
+** DONE login function
+** DONE saving cookies in browser
+** TODO logout
+
+* private folder
+** TODO need to remove data files
+
+* dashboard.html
+** TODO to create a basic structure of dashboard
+** TODO to create a logout facility on dashboard
+
+* todo list
+** TODO need to make a class for todo lists(model)
