@@ -1,5 +1,6 @@
 const { redirect } = require("./responder");
 const { parseArgs } = require("./util/util");
+const User = require("./user");
 
 const handleSignup = function(storeUserDetails, cachedData, req, res) {
   const userDetails = parseArgs(req.body);
@@ -7,7 +8,7 @@ const handleSignup = function(storeUserDetails, cachedData, req, res) {
   const usersData = cachedData.users;
 
   if (isValidUsername(usersData, username)) {
-    usersData[username] = userDetails;
+    usersData[username] = new User(userDetails);
     storeUserDetails(JSON.stringify(usersData));
     res.setHeader("Set-Cookie", `username=${username}`);
     redirect(res, "/dashboard.html");

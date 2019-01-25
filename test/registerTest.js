@@ -31,7 +31,7 @@ describe("handleSignup", function() {
     req.body =
       "firstName=swapnil&lastName=lothe&username=swapy&password=password";
     res.end = () => {
-      const expectedOutput = `{"swapy":{"firstName":"swapnil","lastName":"lothe","username":"swapy","password":"password"}}`;
+      const expectedOutput = `{"swapy":{"username":"swapy","password":"password","firstName":"swapnil","lastName":"lothe"}}`;
       const actualOutput = cachedData.users;
       assert.deepEqual(actualOutput, expectedOutput);
     };
