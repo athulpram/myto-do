@@ -4,7 +4,8 @@ const loadToDoLists = function() {
       return response.json();
     })
     .then(function(myToDo) {
-      document.getElementById("toDo").innerHTML = generateToDoDiv(myToDo);
+      let htmlCode = generateToDoDiv(myToDo);
+      document.getElementById("toDo").innerHTML = htmlCode;
     });
 };
 
@@ -42,21 +43,15 @@ const generateDesc = function(listId, desc) {
 };
 
 const generateItem = function(item) {
-  const itemDesc = generateDesc(item.desc);
-
-  return (
-    itemDesc +
-    `
-  <div>isDone:${item.isDone}</div>
-  `
-  );
+  const itemDesc = generateTitle(item.desc);
+  return itemDesc + `<div>isDone:${item.isDone}</div>`;
 };
 
 const generateItems = function(items) {
-  Object.keys(itemKey => {
-    return;
+  const itemsHtml = Object.keys(items).map(itemKey => {
+    return generateItem(items[itemKey]);
   });
-  return;
+  return itemsHtml.join("");
 };
 
 const generateToDoDiv = function(myToDo) {
@@ -67,7 +62,6 @@ const generateToDoDiv = function(myToDo) {
     const items = generateItems(toDo.items);
     return title + desc + items;
   });
-
   return toDoHtml.join("");
 };
 
