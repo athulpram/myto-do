@@ -53,14 +53,44 @@ const generateDesc = function(listId, desc) {
   </div>`;
 };
 
-const generateItem = function(item) {
+const generateItem = function(item, listId) {
+  const itemDiv = document.createElement("div");
   const itemDesc = generateTitle(item.desc);
-  return itemDesc + `<div>isDone:${item.isDone}</div>`;
+  return (
+    `<input type="checkbox" onclick="${toggleItemStatus(
+      listId,
+      item.id
+    )}" value="checked" ${getCheckStatus(item.isDone)}>` +
+    itemDesc +
+    `<div>isDone:${item.isDone}</div>`
+  );
 };
 
-const generateItems = function(items) {
+const toggleItemStatus = function(listId, itemId) {
+  fetch("/toggledone", {
+    method: "POST",
+    header: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      listId: listId,
+      itemId: itemId
+    })
+  }).then(response => {
+    loadToDoLists();
+  });
+};
+
+const getCheckStatus = function(status) {
+  if (status) {
+    return "checked";
+  }
+  return "";
+};
+
+const generateItems = function(items, listId) {
   const itemsHtml = Object.keys(items).map(itemKey => {
-    return generateItem(items[itemKey]);
+    return generateItem(items[itemKey], listId);
   });
   return itemsHtml.join("");
 };
@@ -94,7 +124,7 @@ const addToDoItem = function(listId) {
 const loadConsole = function(toDoList) {
   let addItemConsole = generateAddItemDiv(toDoList.id);
   document.getElementById("toDoListConsole").innerHTML =
-    toDoList.desc + addItemConsole + generateItems(toDoList.items);
+    toDoList.desc + addItemConsole + generateItems(toDoList.items, toDoList.id);
   loadToDoLists();
 };
 
