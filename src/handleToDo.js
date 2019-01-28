@@ -1,4 +1,7 @@
-const getToDos = function(req, res) {
+const getToDos = function(cachedData, req, res) {
+  const username = req.parsedCookie.username;
+  const userData = cachedData.users[username].toDoLists;
+  res.write(JSON.stringify(userData));
   res.end();
 };
 

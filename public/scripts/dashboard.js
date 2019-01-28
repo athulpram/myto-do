@@ -4,8 +4,7 @@ const loadToDoLists = function() {
       return response.json();
     })
     .then(function(myToDo) {
-      let toDoView = generateToDoView(myToDo);
-      document.getElementById("toDo").appendChild(toDoView);
+      document.getElementById("toDo").innerHTML = generateToDoDiv(myToDo);
     });
 };
 
@@ -19,30 +18,37 @@ const createToDoList = function() {
       title: document.getElementById("title").value,
       desc: document.getElementById("desc").value
     })
-  }).then(response => {});
-};
-
-const generateToDoView = function(myToDo) {
-  let mainToDoDiv = document.createElement("div");
-  myToDo.forEach(element => mainToDoDiv.appendChild(generateToDoDiv(element)));
-  return mainToDoDiv;
-};
-
-const generateToDoDiv = toDo => {
-  let toDoDiv = document.createElement("div");
-  toDoDiv.innerHTML = `<h2>${
-    toDo.title
-  }</h2><br><label> Description : </label> ${toDo.desc}`;
-  let toDoItemsDiv = document.createElement("div");
-  toDoItemsDiv.id = "items";
-  let list = "<ul>";
-  toDo.items.forEach(item => {
-    list += `<li>${item.desc}</li>`;
+  }).then(response => {
+    loadToDoLists();
   });
-  list += "</ul>";
-  toDoItemsDiv.innerHTML = list;
-  toDoDiv.appendChild(toDoItemsDiv);
-  toDoDiv.style.background = "yellow";
-  toDoDiv.style.border = "1px solid black";
-  return toDoDiv;
 };
+
+const generateTitle = function(title) {
+  return `<div>Title:${title}</div>`;
+};
+
+const generateDesc = function(desc) {
+  return `<div>Description:${desc}</div>`;
+};
+
+const generateItem = function(item) {
+  return;
+};
+
+const generateItems = function(items) {
+  return;
+};
+
+const generateToDoDiv = function(myToDo) {
+  const toDoHtml = Object.keys(myToDo).map(myToDoKey => {
+    const toDo = myToDo[myToDoKey];
+    const title = generateTitle(toDo.title);
+    const desc = generateDesc(toDo.desc);
+    const items = generateItems(toDo.items);
+    return title + desc + items;
+  });
+
+  return toDoHtml.join("");
+};
+
+window.onload = loadToDoLists;

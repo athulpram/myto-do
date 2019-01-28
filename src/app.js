@@ -37,7 +37,7 @@ const initializeServer = function(fs) {
   app.post("/login", login);
   app.get("/logout", handleLogout);
   app.get("/dashboard.html", dashboardHandler);
-  app.get("/gettodoitems", getToDos);
+  app.get("/gettodoitems", getToDos.bind(null, cachedData));
   app.post("/createtodolist", addToDoList);
   app.use(requestHandler);
 };
