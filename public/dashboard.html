@@ -10,6 +10,20 @@
       myto-do<span>__username__</span
       ><span><a href="/logout" style="color : white">logout</a></span>
     </header>
-    <div id="main"><div id="toDo" class="toDoDiv"></div></div>
+    <div id="main">
+      <div>
+        <div>
+          <input id="title" type="text" name="title" placeholder="title" />
+          <textarea
+            name="desc"
+            id="desc"
+            type="text"
+            placeholder="description"
+          ></textarea>
+          <button onclick="createToDoList()">Add +</button>
+        </div>
+      </div>
+      <div id="toDo" class="toDoDiv"></div>
+    </div>
   </body>
 </html>

@@ -4,6 +4,7 @@ const User = require("./user");
 
 const handleSignup = function(storeUserDetails, cachedData, req, res) {
   const userDetails = parseArgs(req.body);
+  userDetails.toDoLists = {};
   const username = userDetails.username;
   const usersData = cachedData.users;
 

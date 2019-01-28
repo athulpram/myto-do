@@ -9,6 +9,19 @@ const loadToDoLists = function() {
     });
 };
 
+const createToDoList = function() {
+  fetch("/createtodolist", {
+    method: "POST",
+    header: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      title: document.getElementById("title").value,
+      desc: document.getElementById("desc").value
+    })
+  }).then(response => {});
+};
+
 const generateToDoView = function(myToDo) {
   let mainToDoDiv = document.createElement("div");
   myToDo.forEach(element => mainToDoDiv.appendChild(generateToDoDiv(element)));
