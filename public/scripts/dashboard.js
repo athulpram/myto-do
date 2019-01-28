@@ -92,9 +92,22 @@ const addToDoItem = function(listId) {
 };
 
 const loadConsole = function(toDoList) {
-  document.getElementById("toDoListConsole").innerHTML = generateItems(
-    toDoList.items
-  );
+  let addItemConsole = generateAddItemDiv(toDoList.id);
+  document.getElementById("toDoListConsole").innerHTML =
+    toDoList.desc + addItemConsole + generateItems(toDoList.items);
+  loadToDoLists();
+};
+
+const generateAddItemDiv = function(listId) {
+  return `<div>
+    <textarea
+      name="item"
+      id="${listId}item"
+      type="text"
+      placeholder="description"
+    ></textarea>
+    <button onclick="addToDoItem(${listId})">Add +</button>
+  </div>`;
 };
 
 window.onload = loadToDoLists;
