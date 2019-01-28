@@ -3,7 +3,17 @@ const { handleSignup, handleLogin, handleLogout } = require("./register.js");
 const { handleDashboard } = require("./dashboard.js");
 const { send } = require("./responder.js");
 const { parseArgs } = require("./util/util.js");
-const { getToDos, addToDo, addToDoItem } = require("./handleToDo.js");
+const {
+  getToDos,
+  addToDo,
+  addToDoItem,
+  deleteToDoList,
+  deleteToDoItem,
+  changeToDoTitle,
+  changeToDoDesc,
+  changeItemDesc,
+  toggleDone
+} = require("./handleToDo.js");
 const WebFramework = require("./webFramework");
 const app = new WebFramework();
 const cachedData = {};
@@ -31,6 +41,7 @@ const initializeServer = function(fs) {
   const login = handleLogin.bind(null, cachedData);
   const dashboardHandler = handleDashboard.bind(null, cachedData);
   const addToDoList = addToDo.bind(null, cachedData, storeUserDetails);
+
   app.use(readCookies);
   app.use(readPostedData);
   app.post("/signup", signup);
@@ -42,6 +53,27 @@ const initializeServer = function(fs) {
     "/addtodoitem",
     addToDoItem.bind(null, cachedData, storeUserDetails)
   );
+  app.post(
+    "/deleteToDoItem",
+    deleteToDoItem.bind(null, cachedData, storeUserDetails)
+  );
+  app.post(
+    "/deletetodolist",
+    deleteToDoList.bind(null, cachedData, storeUserDetails)
+  );
+  app.post(
+    "/changetodotitle",
+    changeToDoTitle.bind(null, cachedData, storeUserDetails)
+  );
+  app.post(
+    "/changetododesc",
+    changeToDoDesc.bind(null, cachedData, storeUserDetails)
+  );
+  app.post(
+    "/changeitemdesc",
+    changeItemDesc.bind(null, cachedData, storeUserDetails)
+  );
+  app.post("/toggledone", toggleDone.bind(null, cachedData, storeUserDetails));
   app.post("/createtodolist", addToDoList);
   app.use(requestHandler);
 };

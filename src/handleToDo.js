@@ -21,8 +21,62 @@ const addToDoItem = function(cachedData, storeUserDetails, req, res) {
   res.end();
 };
 
+const deleteToDoList = function(cachedData, storeUserDetails, req, res) {
+  const { listId } = JSON.parse(req.body);
+  const username = req.parsedCookie.username;
+  cachedData.users[username].deleteToDoList(listId);
+  storeUserDetails(JSON.stringify(cachedData.users));
+  res.end();
+};
+
+const deleteToDoItem = function(cachedData, storeUserDetails, req, res) {
+  const { listId, itemId } = JSON.parse(req.body);
+  const username = req.parsedCookie.username;
+  cachedData.users[username].toDoLists[listId].deleteItem(itemId);
+  storeUserDetails(JSON.stringify(cachedData.users));
+  res.end();
+};
+
+const changeToDoTitle = function(cachedData, storeUserDetails, req, res) {
+  const { title, listId } = JSON.parse(req.body);
+  const username = req.parsedCookie.username;
+  cachedData.users[username].toDoLists[listId].changeTitle(title);
+  storeUserDetails(JSON.stringify(cachedData.users));
+  res.end();
+};
+
+const changeToDoDesc = function(cachedData, storeUserDetails, req, res) {
+  const { desc, listId } = JSON.parse(req.body);
+  const username = req.parsedCookie.username;
+  cachedData.users[username].toDoLists[listId].changeDesc(desc);
+  storeUserDetails(JSON.stringify(cachedData.users));
+  res.end();
+};
+
+const changeItemDesc = function(cachedData, storeUserDetails, req, res) {
+  const { listId, itemId, desc } = JSON.parse(req.body);
+  const username = req.parsedCookie.username;
+  cachedData.users[username].toDoLists[listId].items[itemId].changeDesc(desc);
+  storeUserDetails(JSON.stringify(cachedData.users));
+  res.end();
+};
+
+const toggleDone = function(cachedData, storeUserDetails, req, res) {
+  const { listId, itemId } = JSON.parse(req.body);
+  const username = req.parsedCookie.username;
+  cachedData.users[username].toDoLists[listId].items[itemId].toggleDone();
+  storeUserDetails(JSON.stringify(cachedData.users));
+  res.end();
+};
+
 module.exports = {
   getToDos,
   addToDo,
-  addToDoItem
+  addToDoItem,
+  deleteToDoList,
+  deleteToDoItem,
+  changeToDoTitle,
+  changeToDoDesc,
+  changeItemDesc,
+  toggleDone
 };
