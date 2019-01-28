@@ -54,7 +54,7 @@ const initializeServer = function(fs) {
     addToDoItem.bind(null, cachedData, storeUserDetails)
   );
   app.post(
-    "/deleteToDoItem",
+    "/deletetodoitem",
     deleteToDoItem.bind(null, cachedData, storeUserDetails)
   );
   app.post(

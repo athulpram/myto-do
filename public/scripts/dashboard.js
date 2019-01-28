@@ -57,16 +57,32 @@ const generateItem = function(item, listId) {
   const itemDiv = document.createElement("div");
   const itemDesc = generateTitle(item.desc);
   return (
-    `<input type="checkbox" onclick="${toggleItemStatus(
-      listId,
+    `<input type="checkbox" onclick="toggleItemStatus(${listId},${
       item.id
-    )}" value="checked" ${getCheckStatus(item.isDone)}>` +
+    })" value="checked" ${getCheckStatus(item.isDone)}>` +
+    `<button onclick="deleteItem(${listId},${item.id})">Delete Item</button>` +
     itemDesc +
     `<div>isDone:${item.isDone}</div>`
   );
 };
 
+const deleteItem = function(listId, itemId) {
+  fetch("/deletetodoitem", {
+    method: "POST",
+    header: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      listId: listId,
+      itemId: itemId
+    })
+  }).then(response => {
+    loadToDoLists();
+  });
+};
+
 const toggleItemStatus = function(listId, itemId) {
+  console.log("called");
   fetch("/toggledone", {
     method: "POST",
     header: {
