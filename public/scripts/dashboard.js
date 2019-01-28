@@ -27,15 +27,35 @@ const generateTitle = function(title) {
   return `<div>Title:${title}</div>`;
 };
 
-const generateDesc = function(desc) {
-  return `<div>Description:${desc}</div>`;
+const generateDesc = function(listId, desc) {
+  return `<div>Description:${desc}
+   <div>
+          <textarea
+            name="item"
+            id="${listId}item"
+            type="text"
+            placeholder="description"
+          ></textarea>
+          <button onclick="addToDoItem(${listId})">Add +</button>
+        </div>
+  </div>`;
 };
 
 const generateItem = function(item) {
-  return;
+  const itemDesc = generateDesc(item.desc);
+
+  return (
+    itemDesc +
+    `
+  <div>isDone:${item.isDone}</div>
+  `
+  );
 };
 
 const generateItems = function(items) {
+  Object.keys(itemKey => {
+    return;
+  });
   return;
 };
 
@@ -43,12 +63,27 @@ const generateToDoDiv = function(myToDo) {
   const toDoHtml = Object.keys(myToDo).map(myToDoKey => {
     const toDo = myToDo[myToDoKey];
     const title = generateTitle(toDo.title);
-    const desc = generateDesc(toDo.desc);
+    const desc = generateDesc(toDo.id, toDo.desc);
     const items = generateItems(toDo.items);
     return title + desc + items;
   });
 
   return toDoHtml.join("");
+};
+
+const addToDoItem = function(listId) {
+  fetch("/addtodoitem", {
+    method: "POST",
+    header: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      toDoItem: { desc: document.getElementById(listId + "item").value },
+      listId: listId
+    })
+  }).then(response => {
+    loadToDoLists();
+  });
 };
 
 window.onload = loadToDoLists;

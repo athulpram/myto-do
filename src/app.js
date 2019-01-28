@@ -3,7 +3,7 @@ const { handleSignup, handleLogin, handleLogout } = require("./register.js");
 const { handleDashboard } = require("./dashboard.js");
 const { send } = require("./responder.js");
 const { parseArgs } = require("./util/util.js");
-const { getToDos, addToDo } = require("./handleToDo.js");
+const { getToDos, addToDo, addToDoItem } = require("./handleToDo.js");
 const WebFramework = require("./webFramework");
 const app = new WebFramework();
 const cachedData = {};
@@ -38,6 +38,10 @@ const initializeServer = function(fs) {
   app.get("/logout", handleLogout);
   app.get("/dashboard.html", dashboardHandler);
   app.get("/gettodoitems", getToDos.bind(null, cachedData));
+  app.post(
+    "/addtodoitem",
+    addToDoItem.bind(null, cachedData, storeUserDetails)
+  );
   app.post("/createtodolist", addToDoList);
   app.use(requestHandler);
 };

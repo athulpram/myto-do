@@ -29,7 +29,7 @@ class ToDoList {
   }
   getNextItemId() {
     const itemsKey = Object.keys(this.items).sort();
-    return +itemsKey[itemsKey.length - 1] + 1;
+    return +itemsKey[itemsKey.length - 1] + 1 || 0;
   }
 }
 
