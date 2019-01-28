@@ -4,9 +4,20 @@ const loadToDoLists = function() {
       return response.json();
     })
     .then(function(myToDo) {
-      let htmlCode = generateToDoDiv(myToDo);
-      document.getElementById("toDo").innerHTML = htmlCode;
+      let toDoListsDiv = document.getElementById("toDoLists");
+      toDoListsDiv.innerHTML = "";
+      getToDoLists(toDoListsDiv, myToDo);
     });
+};
+
+const getToDoLists = function(toDoListDiv, myToDo) {
+  Object.keys(myToDo).map(toDoListKey => {
+    let toDoDiv = document.createElement("div");
+    toDoDiv.id = toDoListKey;
+    toDoDiv.onclick = loadConsole.bind(null, myToDo[toDoListKey]);
+    toDoDiv.innerText = myToDo[toDoListKey].title;
+    toDoListDiv.appendChild(toDoDiv);
+  });
 };
 
 const createToDoList = function() {
@@ -78,6 +89,12 @@ const addToDoItem = function(listId) {
   }).then(response => {
     loadToDoLists();
   });
+};
+
+const loadConsole = function(toDoList) {
+  document.getElementById("toDoListConsole").innerHTML = generateItems(
+    toDoList.items
+  );
 };
 
 window.onload = loadToDoLists;

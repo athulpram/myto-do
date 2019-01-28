@@ -1,0 +1,14 @@
+.toDoDiv {
+  display: flex;
+}
+.toDoListsDiv {
+  border: 1px solid black;
+  width: 350px;
+  height: 640px;
+  background: rgb(162, 162, 199);
+}
+.toDoListConsoleDiv {
+  width: 1050px;
+  height: 640px;
+  border: 1px solid black;
+}

@@ -3,6 +3,7 @@
   <head>
     <title>DashBoard</title>
     <link rel="stylesheet" type="text/css" href="/styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/dashboard.css" />
     <script src="/scripts/dashboard.js"></script>
   </head>
   <body>
@@ -23,7 +24,10 @@
           <button onclick="createToDoList()">Add +</button>
         </div>
       </div>
-      <div id="toDo" class="toDoDiv"></div>
+      <div id="toDo" class="toDoDiv">
+        <div id="toDoLists" class="toDoListsDiv"></div>
+        <div id="toDoListConsole" class="toDoListConsoleDiv"></div>
+      </div>
     </div>
   </body>
 </html>
