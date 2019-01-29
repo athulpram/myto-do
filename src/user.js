@@ -20,7 +20,7 @@ class User {
     return this.password == password;
   }
   deleteToDoList(toDoId) {
-    deleteProperty(this.toDoList, toDoId);
+    deleteProperty(this.toDoLists, toDoId);
   }
   addToDoList(toDoList) {
     let toDoListId = this.getNextToDoListId();

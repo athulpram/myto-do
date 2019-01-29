@@ -9,6 +9,6 @@ const deleteProperty = function(obj, key) {
 };
 
 module.exports = {
-    addProperty,
-    deleteProperty
-}
+  addProperty,
+  deleteProperty
+};

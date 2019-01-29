@@ -13,10 +13,29 @@ const loadToDoLists = function() {
 const getToDoLists = function(toDoListDiv, myToDo) {
   Object.keys(myToDo).map(toDoListKey => {
     let toDoDiv = document.createElement("div");
+    const editButton = document.createElement("button");
+    editButton.innerText = "\u270E";
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "\uD83D\uDDD1";
+    deleteButton.onclick = deleteToDoList.bind(null, myToDo[toDoListKey]);
     toDoDiv.id = toDoListKey;
     toDoDiv.onclick = loadConsole.bind(null, myToDo[toDoListKey]);
     toDoDiv.innerText = myToDo[toDoListKey].title;
+    toDoDiv.appendChild(editButton);
+    toDoDiv.appendChild(deleteButton);
     toDoListDiv.appendChild(toDoDiv);
+  });
+  loadConsole(myToDo[Object.keys(myToDo)[0]]);
+};
+
+const deleteToDoList = function(toDoList) {
+  fetch("/deletetodolist", {
+    method: "POST",
+    body: JSON.stringify({
+      listId: toDoList.id
+    })
+  }).then(response => {
+    loadToDoLists();
   });
 };
 
@@ -138,10 +157,14 @@ const addToDoItem = function(listId) {
 };
 
 const loadConsole = function(toDoList) {
-  let addItemConsole = generateAddItemDiv(toDoList.id);
-  document.getElementById("toDoListConsole").innerHTML =
-    toDoList.desc + addItemConsole + generateItems(toDoList.items, toDoList.id);
-  loadToDoLists();
+  document.getElementById("toDoListConsole").innerHTML = "";
+  if (toDoList) {
+    let addItemConsole = generateAddItemDiv(toDoList.id);
+    document.getElementById("toDoListConsole").innerHTML =
+      toDoList.desc +
+      addItemConsole +
+      generateItems(toDoList.items, toDoList.id);
+  }
 };
 
 const generateAddItemDiv = function(listId) {

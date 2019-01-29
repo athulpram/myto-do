@@ -13,7 +13,6 @@ const addToDo = function(cachedData, storeUserDetails, req, res) {
   res.end();
 };
 
-
 const addToDoItem = function(cachedData, storeUserDetails, req, res) {
   const { toDoItem, listId } = JSON.parse(req.body);
   const username = req.parsedCookie.username;
