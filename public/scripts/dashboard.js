@@ -4,28 +4,33 @@ const loadToDoLists = function() {
       return response.json();
     })
     .then(function(myToDo) {
-      let toDoListsDiv = document.getElementById("toDoLists");
+      const toDoListsDiv = document.getElementById("toDoLists");
       toDoListsDiv.innerHTML = "";
       getToDoLists(toDoListsDiv, myToDo);
     });
-};
+};  
 
 const getToDoLists = function(toDoListDiv, myToDo) {
   Object.keys(myToDo).map(toDoListKey => {
     let toDoDiv = document.createElement("div");
+    toDoDiv.id = toDoListKey;
+
     const editButton = document.createElement("button");
     editButton.innerText = "\u270E";
     editButton.onclick = loadEditConsole.bind(null, myToDo[toDoListKey]);
+
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "\uD83D\uDDD1";
     deleteButton.onclick = deleteToDoList.bind(null, myToDo[toDoListKey]);
-    toDoDiv.id = toDoListKey;
-    let toDoHeading = document.createElement("div");
+
+    const toDoHeading = document.createElement("div");
     toDoHeading.innerText = myToDo[toDoListKey].title;
     toDoHeading.onclick = loadConsole.bind(null, myToDo[toDoListKey]);
+
     toDoDiv.appendChild(toDoHeading);
     toDoDiv.appendChild(editButton);
     toDoDiv.appendChild(deleteButton);
+    toDoDiv.className = "toDoListNav";
     toDoListDiv.appendChild(toDoDiv);
   });
   loadConsole(myToDo[Object.keys(myToDo)[0]]);
@@ -76,13 +81,17 @@ const generateDesc = function(listId, desc) {
 };
 
 const generateItem = function(item, listId) {
-  const itemDiv = document.createElement("div");
   const itemDesc = generateTitle(item.desc);
   return (
     `<input type="checkbox" onclick="toggleItemStatus(${listId},${
       item.id
     })" value="checked" ${getCheckStatus(item.isDone)}>` +
-    `<button onclick="deleteItem(${listId},${item.id})">Delete Item</button>` +
+    `<button onclick="loadItemEditConsole(${listId},${
+      item.id
+    })">${"\u270E"}</button>` +
+    `<button onclick="deleteItem(${listId},${
+      item.id
+    })">${"\uD83D\uDDD1"}</button>` +
     itemDesc +
     `<div>isDone:${item.isDone}</div>`
   );
@@ -162,7 +171,7 @@ const addToDoItem = function(listId) {
 const loadConsole = function(toDoList) {
   document.getElementById("toDoListConsole").innerHTML = "";
   if (toDoList) {
-    let addItemConsole = generateAddItemDiv(toDoList.id);
+    const addItemConsole = generateAddItemDiv(toDoList.id);
     document.getElementById("toDoListConsole").innerHTML =
       toDoList.desc +
       addItemConsole +
@@ -178,31 +187,64 @@ const loadEditConsole = function(toDoList) {
       .appendChild(generateEditTitle(toDoList));
     document
       .getElementById("toDoListConsole")
-      .appendChild(generateEditDesc(toDoList));
+      .appendChild(
+        generateEditDesc(toDoList, changeDesc.bind(null, toDoList.id))
+      );
   }
 };
 
-const generateEditDesc = function(toDoList) {
-  let editDescDiv = document.createElement("div");
-  let descBox = document.createElement("input");
+const loadItemEditConsole = function(toDoListId, itemId) {
+  document.getElementById("toDoListConsole").innerHTML = "";
+  document
+    .getElementById("toDoListConsole")
+    .appendChild(
+      generateEditDesc(
+        { id: itemId, desc: "new desc here" },
+        editItem.bind(null, toDoListId, { id: itemId, desc: "new desc here" })
+      )
+    );
+};
+
+const editItem = function(listId, item) {
+  fetch("changeitemdesc", {
+    method: "POST",
+    header: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      listId,
+      itemId: item.id,
+      desc: document.getElementById("editDesc").value
+    })
+  }).then(res => {
+    loadToDoLists();
+  });
+};
+
+const generateEditDesc = function(list, onclickFunc) {
+  const editDescDiv = document.createElement("div");
+
+  const descBox = document.createElement("input");
   descBox.type = "text";
-  descBox.value = toDoList.desc;
+  descBox.value = list.desc;
   descBox.id = "editDesc";
-  let descButton = document.createElement("button");
-  descButton.onclick = changeDesc.bind(null, toDoList.id);
+
+  const descButton = document.createElement("button");
+  descButton.onclick = onclickFunc;
   descButton.innerText = "submit";
+
   editDescDiv.appendChild(descBox);
   editDescDiv.appendChild(descButton);
   return editDescDiv;
 };
 
 const generateEditTitle = function(toDoList) {
-  let editTitleDiv = document.createElement("div");
-  let titleBox = document.createElement("input");
+  const editTitleDiv = document.createElement("div");
+  const titleBox = document.createElement("input");
   titleBox.type = "text";
   titleBox.value = toDoList.title;
   titleBox.id = "editTitle";
-  let titleButton = document.createElement("button");
+  const titleButton = document.createElement("button");
   titleButton.innerText = "Submit";
   titleButton.onclick = changeTitle.bind(null, toDoList.id);
   editTitleDiv.appendChild(titleBox);
@@ -224,6 +266,7 @@ const changeDesc = function(toDoListId) {
     loadToDoLists();
   });
 };
+
 const changeTitle = function(toDoListId) {
   fetch("/changetodotitle", {
     method: "POST",
