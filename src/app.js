@@ -41,6 +41,7 @@ const initializeServer = function(fs) {
   const login = handleLogin.bind(null, cachedData);
   const dashboardHandler = handleDashboard.bind(null, cachedData);
   const addToDoList = addToDo.bind(null, cachedData, storeUserDetails);
+  cachedData.loggedInUsers = [];
 
   app.use(readCookies);
   app.use(readPostedData);

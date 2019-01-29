@@ -28,7 +28,7 @@ class ToDoList {
     addProperty(this.items, itemId, new ToDoItem(toDoItem));
   }
   getNextItemId() {
-    const itemsKey = Object.keys(this.items).sort();
+    const itemsKey = Object.keys(this.items).sort((key1, key2) => key1 - key2);
     return +itemsKey[itemsKey.length - 1] + 1 || 0;
   }
 }

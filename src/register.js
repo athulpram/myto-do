@@ -11,6 +11,7 @@ const handleSignup = function(storeUserDetails, cachedData, req, res) {
   if (isValidUsername(usersData, username)) {
     usersData[username] = new User(userDetails);
     storeUserDetails(JSON.stringify(usersData));
+    cachedData.loggedInUsers.push(username);
     res.setHeader("Set-Cookie", `username=${username}`);
     redirect(res, "/dashboard.html");
     return;
@@ -31,6 +32,9 @@ const handleLogin = function(cachedData, req, res) {
     !isValidUsername(userData, username) &&
     userData[username].isValidPassword(password)
   ) {
+    if (!cachedData.loggedInUsers.includes(username)) {
+      cachedData.loggedInUsers.push(username);
+    }
     res.setHeader("Set-Cookie", `username=${username}`);
     redirect(res, "/dashboard.html");
     return;

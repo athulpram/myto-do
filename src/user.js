@@ -29,8 +29,11 @@ class User {
     addProperty(this.toDoLists, toDoListId, new ToDoList(toDoList));
   }
   getNextToDoListId() {
-    const toDoListsKey = Object.keys(this.toDoLists).sort();
-    return +toDoListsKey[toDoListsKey.length - 1] + 1 || 0;
+    const toDoListsKey = Object.keys(this.toDoLists).sort(
+      (key1, key2) => key1 - key2
+    );
+    const nextId = +toDoListsKey[toDoListsKey.length - 1] + 1 || 0;
+    return nextId;
   }
 }
 
