@@ -3,7 +3,22 @@ const assert = require("assert");
 
 const files = {
   "./public/index.html": "This is index.html",
-  "./private/userData.json": `{"pram":{"username":"pram","password":"something","firstName":"athul","lastName":"athul"}}`
+  "./private/userData.json": `{
+  "a": {
+    "username": "a",
+    "password": "a",
+    "firstName": "a",
+    "lastName": "a",
+    "toDoLists": {
+      "0": {
+        "id": 0,
+        "title": "fadsdsf",
+        "desc": "sdffsdg",
+        "items": { "1": { "id": 1, "desc": "sdafdsf", "isDone": true } }
+      }
+    }
+  }
+}`
 };
 
 const dummyFs = {
