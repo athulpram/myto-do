@@ -1,14 +1,5 @@
-const loadToDoLists = function() {
-  fetch("/gettodoitems")
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(myToDo) {
-      const toDoListsDiv = document.getElementById("toDoLists");
-      toDoListsDiv.innerHTML = "";
-      getToDoLists(toDoListsDiv, myToDo);
-    });
-};  
+const PENCIL = "\u270E";
+const WASTEBIN = "\uD83D\uDDD1";
 
 const getToDoLists = function(toDoListDiv, myToDo) {
   Object.keys(myToDo).map(toDoListKey => {
@@ -16,11 +7,11 @@ const getToDoLists = function(toDoListDiv, myToDo) {
     toDoDiv.id = toDoListKey;
 
     const editButton = document.createElement("button");
-    editButton.innerText = "\u270E";
+    editButton.innerText = PENCIL;
     editButton.onclick = loadEditConsole.bind(null, myToDo[toDoListKey]);
 
     const deleteButton = document.createElement("button");
-    deleteButton.innerText = "\uD83D\uDDD1";
+    deleteButton.innerText = WASTEBIN;
     deleteButton.onclick = deleteToDoList.bind(null, myToDo[toDoListKey]);
 
     const toDoHeading = document.createElement("div");
@@ -36,149 +27,6 @@ const getToDoLists = function(toDoListDiv, myToDo) {
   loadConsole(myToDo[Object.keys(myToDo)[0]]);
 };
 
-const deleteToDoList = function(toDoList) {
-  fetch("/deletetodolist", {
-    method: "POST",
-    body: JSON.stringify({
-      listId: toDoList.id
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
-};
-
-const createToDoList = function() {
-  fetch("/createtodolist", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      title: document.getElementById("title").value,
-      desc: document.getElementById("desc").value
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
-};
-
-const generateTitle = function(title) {
-  return `<div>Title:${title}</div>`;
-};
-
-const generateDesc = function(listId, desc) {
-  return `<div>Description:${desc}
-   <div>
-          <textarea
-            name="item"
-            id="${listId}item"
-            type="text"
-            placeholder="description"
-          ></textarea>
-          <button onclick="addToDoItem(${listId})">Add +</button>
-        </div>
-  </div>`;
-};
-
-const generateItem = function(item, listId) {
-  const itemDesc = generateTitle(item.desc);
-  return (
-    `<input type="checkbox" onclick="toggleItemStatus(${listId},${
-      item.id
-    })" value="checked" ${getCheckStatus(item.isDone)}>` +
-    `<button onclick="loadItemEditConsole(${listId},${
-      item.id
-    })">${"\u270E"}</button>` +
-    `<button onclick="deleteItem(${listId},${
-      item.id
-    })">${"\uD83D\uDDD1"}</button>` +
-    itemDesc +
-    `<div>isDone:${item.isDone}</div>`
-  );
-};
-
-const deleteItem = function(listId, itemId) {
-  fetch("/deletetodoitem", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      listId: listId,
-      itemId: itemId
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
-};
-
-const toggleItemStatus = function(listId, itemId) {
-  console.log("called");
-  fetch("/toggledone", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      listId: listId,
-      itemId: itemId
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
-};
-
-const getCheckStatus = function(status) {
-  if (status) {
-    return "checked";
-  }
-  return "";
-};
-
-const generateItems = function(items, listId) {
-  const itemsHtml = Object.keys(items).map(itemKey => {
-    return generateItem(items[itemKey], listId);
-  });
-  return itemsHtml.join("");
-};
-
-const generateToDoDiv = function(myToDo) {
-  const toDoHtml = Object.keys(myToDo).map(myToDoKey => {
-    const toDo = myToDo[myToDoKey];
-    const title = generateTitle(toDo.title);
-    const desc = generateDesc(toDo.id, toDo.desc);
-    const items = generateItems(toDo.items);
-    return title + desc + items;
-  });
-  return toDoHtml.join("");
-};
-
-const addToDoItem = function(listId) {
-  fetch("/addtodoitem", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      toDoItem: { desc: document.getElementById(listId + "item").value },
-      listId: listId
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
-};
-
-const loadConsole = function(toDoList) {
-  document.getElementById("toDoListConsole").innerHTML = "";
-  if (toDoList) {
-    const addItemConsole = generateAddItemDiv(toDoList.id);
-    document.getElementById("toDoListConsole").innerHTML =
-      toDoList.desc +
-      addItemConsole +
-      generateItems(toDoList.items, toDoList.id);
-  }
-};
-
 const loadEditConsole = function(toDoList) {
   document.getElementById("toDoListConsole").innerHTML = "";
   if (toDoList) {
@@ -191,34 +39,6 @@ const loadEditConsole = function(toDoList) {
         generateEditDesc(toDoList, changeDesc.bind(null, toDoList.id))
       );
   }
-};
-
-const loadItemEditConsole = function(toDoListId, itemId) {
-  document.getElementById("toDoListConsole").innerHTML = "";
-  document
-    .getElementById("toDoListConsole")
-    .appendChild(
-      generateEditDesc(
-        { id: itemId, desc: "new desc here" },
-        editItem.bind(null, toDoListId, { id: itemId, desc: "new desc here" })
-      )
-    );
-};
-
-const editItem = function(listId, item) {
-  fetch("changeitemdesc", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      listId,
-      itemId: item.id,
-      desc: document.getElementById("editDesc").value
-    })
-  }).then(res => {
-    loadToDoLists();
-  });
 };
 
 const generateEditDesc = function(list, onclickFunc) {
@@ -238,60 +58,123 @@ const generateEditDesc = function(list, onclickFunc) {
   return editDescDiv;
 };
 
+const loadItemEditConsole = function(toDoListId, itemId) {
+  document.getElementById("toDoListConsole").innerHTML = "";
+  document
+    .getElementById("toDoListConsole")
+    .appendChild(
+      generateEditDesc(
+        { id: itemId, desc: "new desc here" },
+        editItem.bind(null, toDoListId, { id: itemId, desc: "new desc here" })
+      )
+    );
+};
 const generateEditTitle = function(toDoList) {
   const editTitleDiv = document.createElement("div");
+
   const titleBox = document.createElement("input");
   titleBox.type = "text";
   titleBox.value = toDoList.title;
   titleBox.id = "editTitle";
+
   const titleButton = document.createElement("button");
   titleButton.innerText = "Submit";
   titleButton.onclick = changeTitle.bind(null, toDoList.id);
+
   editTitleDiv.appendChild(titleBox);
   editTitleDiv.appendChild(titleButton);
   return editTitleDiv;
 };
 
-const changeDesc = function(toDoListId) {
-  fetch("/changetododesc", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      desc: document.getElementById("editDesc").value,
-      listId: toDoListId
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
+const generateTitle = function(title) {
+  const titleDiv = document.createElement("span");
+  titleDiv.innerText = title;
+  return titleDiv;
 };
 
-const changeTitle = function(toDoListId) {
-  fetch("/changetodotitle", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      title: document.getElementById("editTitle").value,
-      listId: toDoListId
-    })
-  }).then(response => {
-    loadToDoLists();
+const generateItem = function(item, listId) {
+  const itemDiv = document.createElement("div");
+  const itemDesc = document.createElement("div");
+  itemDesc.appendChild = generateTitle(item.desc);
+
+  const checkBox = document.createElement("input");
+  checkBox.type = "checkbox";
+  checkBox.onclick = toggleItemStatus.bind(null, listId, item.id);
+  checkBox.checked = item.isDone;
+
+  const editItemButton = document.createElement("button");
+  editItemButton.onclick = loadItemEditConsole.bind(listId, item);
+  editItemButton.innerText = "\u270E";
+
+  const deleteItemButton = document.createElement("button");
+  deleteItemButton.onclick = deleteItem.bind(null, listId, item.id);
+  deleteItemButton.innerText = "\uD83D\uDDD1";
+
+  itemDiv.appendChild(checkBox);
+  itemDiv.appendChild(editItemButton);
+  itemDiv.appendChild(itemDesc);
+  itemDiv.appendChild(deleteItemButton);
+
+  return itemDiv;
+};
+
+const getCheckStatus = bool => {
+  if (bool) {
+    return "checked";
+  }
+  return "";
+};
+
+const generateItems = function(items, listId) {
+  const itemsDiv = document.createElement("div");
+  Object.keys(items).forEach(itemKey => {
+    itemsDiv.appendChild(generateItem(items[itemKey], listId));
   });
+  return itemsDiv;
+};
+
+const loadConsole = function(toDoList) {
+  const console = document.getElementById("toDoListConsole");
+  console.innerHTML = "";
+  if (toDoList) {
+    const addItemConsole = generateAddItemDiv(toDoList.id);
+    // toDoList.desc +
+    // addItemConsole +
+    // generateItems(toDoList.items, toDoList.id);
+    const desc = document.createElement("span");
+    desc.innerText = toDoList.desc;
+
+    console.appendChild(desc);
+    console.appendChild(addItemConsole);
+    console.appendChild(generateItems(toDoList.items, toDoList.id));
+  }
 };
 
 const generateAddItemDiv = function(listId) {
-  return `<div>
-    <textarea
-      name="item"
-      id="${listId}item"
-      type="text"
-      placeholder="description"
-    ></textarea>
-    <button onclick="addToDoItem(${listId})">Add +</button>
-  </div>`;
+  const addItemDiv = document.createElement("div");
+
+  const descBox = document.createElement("textarea");
+  descBox.id = listId + "item";
+  descBox.type = "text";
+  descBox.name = "item";
+  descBox.placeholder = "description";
+
+  const addButton = document.createElement("button");
+  addButton.onclick = addToDoItem.bind(null, listId);
+  addButton.innerText = "Add +";
+
+  addItemDiv.appendChild(descBox);
+  addItemDiv.appendChild(addButton);
+  return addItemDiv;
+  // return `<div>
+  //   <textarea
+  //     name="item"
+  //     id="${listId}item"
+  //     type="text"
+  //     placeholder="description"
+  //   ></textarea>
+  //   <button onclick="addToDoItem(${listId})">Add +</button>
+  // </div>`;
 };
 
 window.onload = loadToDoLists;

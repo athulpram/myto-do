@@ -1,6 +1,7 @@
 .toDoDiv {
   display: flex;
 }
+
 .toDoListsDiv {
   border: 1px solid black;
   width: 350px;
@@ -8,20 +9,24 @@
   overflow: scroll;
   background: rgb(162, 162, 199);
 }
+
 .toDoListConsoleDiv {
   width: 1050px;
   height: 640px;
   border: 1px solid black;
 }
+
 input[type="checkbox"] {
   width: 30px;
   height: 30px;
 }
+
 .toDoListNav {
   color: white;
   border: 2px solid black;
   font-size: 20px;
 }
+
 .selectedToDoDiv {
   background: navy;
 }
