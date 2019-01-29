@@ -10,7 +10,19 @@ body {
 .headerDiv {
   height: 40px;
   width: auto;
-  background: navy;
+  background: black;
   color: white;
   font-size: 20px;
+}
+
+.welcomeText {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.logout {
+  padding-top: 5px;
+  color: white;
+  float: right;
+  padding-right: 20px;
 }

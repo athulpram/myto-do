@@ -5,14 +5,14 @@
 .toDoListsDiv {
   border: 1px solid black;
   width: 350px;
-  height: 640px;
+  height: 525px;
   overflow: scroll;
-  background: rgb(162, 162, 199);
+  background: grey;
 }
 
 .toDoListConsoleDiv {
   width: 1050px;
-  height: 640px;
+  height: 665 px;
   border: 1px solid black;
 }
 
@@ -21,6 +21,13 @@ input[type="checkbox"] {
   height: 30px;
 }
 
+.listDiv {
+  background: black;
+  color: white;
+  border: 1px solid white;
+  padding-left: 5px;
+  padding-right: 5px;
+}
 .toDoListNav {
   color: white;
   border: 2px solid black;
@@ -28,5 +35,15 @@ input[type="checkbox"] {
 }
 
 .selectedToDoDiv {
-  background: navy;
+  background: grey;
+}
+
+.toDoListHeader {
+  background: grey;
+  font-size: 20px;
+  display: table;
+}
+.newListElement {
+  vertical-align: middle;
+  display: table-cell;
 }

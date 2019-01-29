@@ -43,7 +43,7 @@ const loadEditConsole = function(toDoList) {
 
 const generateEditDesc = function(list, onclickFunc) {
   const editDescDiv = document.createElement("div");
-
+  console.log(list);
   const descBox = document.createElement("input");
   descBox.type = "text";
   descBox.value = list.desc;
@@ -58,16 +58,11 @@ const generateEditDesc = function(list, onclickFunc) {
   return editDescDiv;
 };
 
-const loadItemEditConsole = function(toDoListId, itemId) {
+const loadItemEditConsole = function(toDoListId, item) {
   document.getElementById("toDoListConsole").innerHTML = "";
   document
     .getElementById("toDoListConsole")
-    .appendChild(
-      generateEditDesc(
-        { id: itemId, desc: "new desc here" },
-        editItem.bind(null, toDoListId, { id: itemId, desc: "new desc here" })
-      )
-    );
+    .appendChild(generateEditDesc(item, editItem.bind(null, toDoListId, item)));
 };
 const generateEditTitle = function(toDoList) {
   const editTitleDiv = document.createElement("div");
@@ -95,7 +90,7 @@ const generateTitle = function(title) {
 const generateItem = function(item, listId) {
   const itemDiv = document.createElement("div");
   const itemDesc = document.createElement("div");
-  itemDesc.appendChild = generateTitle(item.desc);
+  itemDesc.appendChild(generateTitle(item.desc));
 
   const checkBox = document.createElement("input");
   checkBox.type = "checkbox";
@@ -103,7 +98,7 @@ const generateItem = function(item, listId) {
   checkBox.checked = item.isDone;
 
   const editItemButton = document.createElement("button");
-  editItemButton.onclick = loadItemEditConsole.bind(listId, item);
+  editItemButton.onclick = loadItemEditConsole.bind(null, listId, item);
   editItemButton.innerText = "\u270E";
 
   const deleteItemButton = document.createElement("button");
@@ -166,15 +161,6 @@ const generateAddItemDiv = function(listId) {
   addItemDiv.appendChild(descBox);
   addItemDiv.appendChild(addButton);
   return addItemDiv;
-  // return `<div>
-  //   <textarea
-  //     name="item"
-  //     id="${listId}item"
-  //     type="text"
-  //     placeholder="description"
-  //   ></textarea>
-  //   <button onclick="addToDoItem(${listId})">Add +</button>
-  // </div>`;
 };
 
 window.onload = loadToDoLists;

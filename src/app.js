@@ -82,7 +82,7 @@ const initializeServer = function(fs) {
 const isFilePresent = file =>
   Object.keys(cachedData.publicFiles).includes(file);
 
-const requestHandler = (req, res) => {
+const requestHandler = (req, res) => {  
   const url = getFilePath(req.url);
   if (isFilePresent(url)) {
     send(res, cachedData.publicFiles[url]);

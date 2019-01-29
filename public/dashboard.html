@@ -9,26 +9,35 @@
   </head>
   <body>
     <header class="headerDiv">
-      <span>Welcome __username__ to My To-Do </span
-      ><span
-        ><a href="/logout" style="color : white; float: right">logout</a></span
-      >
+      <span class="welcomeText">Welcome __username__ </span
+      ><span><a href="/logout" class="logout">logout</a></span>
     </header>
     <div id="main">
-      <div>
-        <div>
-          <input id="title" type="text" name="title" placeholder="title" />
-          <textarea
-            name="desc"
-            id="desc"
-            type="text"
-            placeholder="description"
-          ></textarea>
-          <button onclick="createToDoList()">Add +</button>
-        </div>
-      </div>
       <div id="toDo" class="toDoDiv">
-        <div id="toDoLists" class="toDoListsDiv"></div>
+        <div class="listDiv">
+          <h3>To Dos List :</h3>
+          <div id="toDoLists" class="toDoListsDiv"></div>
+          <div class="addNewTodo">
+            <fieldset>
+              <legend style="color : white">Add To Do</legend>
+              <label>Title :</label><input
+                class="newListElement"
+                id="title"
+                type="text"
+                name="title"
+                placeholder="title"
+              /></br>
+              <label>Description : </label><textarea
+                class="newListElement"
+                name="desc"
+                id="desc"
+                type="text"
+                placeholder="description"
+              ></textarea></br>
+              <button onclick="createToDoList()">Add +</button>
+            </fieldset>
+          </div>
+        </div>
         <div id="toDoListConsole" class="toDoListConsoleDiv"></div>
       </div>
     </div>
