@@ -13,48 +13,60 @@
     <div id="main" class="mainDiv">
       <div id="signup" class="signupDiv">
         <form action="/signup" method="POST">
-          <input
-            type="text"
-            name="firstName"
-            placeholder="firstName"
-            class="signupField"
-          /><br />
-          <input
-            type="text"
-            name="lastName"
-            placeholder="lastName"
-            class="signupField"
-          /><br />
-          <input
-            type="text"
-            name="username"
-            placeholder="username"
-            class="signupField"
-          /><br />
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            class="signupField"
-          /><br />
-          <input type="submit" value="Sign Up" />
+          <fieldset>
+            <legend>Sign Up</legend>
+            <label>First Name <span class="mandatory">*</span> : </label
+            ><input
+              type="text"
+              name="firstName"
+              placeholder="firstName"
+              class="signupField"
+            /><br />
+            <label>Last Name <span class="mandatory">*</span> : </label>
+            <input
+              type="text"
+              name="lastName"
+              placeholder="lastName"
+              class="signupField"
+            /><br />
+            <label>Username <span class="mandatory">*</span> : </label>
+            <input
+              type="text"
+              name="username"
+              placeholder="username"
+              class="signupField"
+            /><br />
+            <label>Password <span class="mandatory">*</span> : </label>
+            <input
+              type="password"
+              name="password"
+              placeholder="password"
+              class="signupField"
+            /><br />
+            <input type="submit" value="Sign Up" />
+          </fieldset>
         </form>
       </div>
       <div id="login" class="loginDiv">
         <form action="/login" method="POST">
-          <input
-            type="text"
-            name="username"
-            placeholder="username"
-            class="loginField"
-          /><br />
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            class="loginField"
-          /><br />
-          <input type="submit" value="Log In" />
+          <fieldset>
+            <legend>Log In</legend>
+            <label>Username : </label>
+            <input
+              type="text"
+              name="username"
+              placeholder="username"
+              class="loginField"
+            /><br />
+            <label>Password : </label>
+            <input
+              type="password"
+              name="password"
+              placeholder="password"
+              class="loginField"
+            /><br />
+            <input type="submit" value="Log In" />
+          </fieldset>
         </form>
       </div>
     </div>
