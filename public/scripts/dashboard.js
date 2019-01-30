@@ -1,22 +1,23 @@
 const PENCIL = "\u270E";
 const WASTEBIN = "\uD83D\uDDD1";
-
+const ADD = "\u2795";
 const getToDoLists = function(toDoListDiv, myToDo) {
   Object.keys(myToDo).map(toDoListKey => {
     let toDoDiv = document.createElement("div");
     toDoDiv.id = toDoListKey;
-
+    const editConsole = loadEditConsole.bind(null, myToDo[toDoListKey]);
+    const deleteToDo = deleteToDoList.bind(null, myToDo[toDoListKey]);
     const editButton = createButton(
       document,
       PENCIL,
-      loadEditConsole.bind(null, myToDo[toDoListKey]),
+      editConsole,
       "iconButton"
     );
 
     const deleteButton = createButton(
       document,
       WASTEBIN,
-      deleteToDoList.bind(null, myToDo[toDoListKey]),
+      deleteToDo,
       "iconButton"
     );
 
@@ -33,49 +34,40 @@ const getToDoLists = function(toDoListDiv, myToDo) {
 };
 
 const loadEditConsole = function(toDoList) {
-  document.getElementById("toDoListConsole").innerHTML = "";
+  const toDoListConsole = document.getElementById("toDoListConsole");
+  toDoListConsole.innerHTML = "";
   if (toDoList) {
-    document
-      .getElementById("toDoListConsole")
-      .appendChild(generateEditTitle(toDoList));
-    document
-      .getElementById("toDoListConsole")
-      .appendChild(
-        generateEditDesc(toDoList, changeDesc.bind(null, toDoList.id))
-      );
+    const changeDescView = changeDesc.bind(null, toDoList.id);
+    const generateEditDescView = generateEditDesc(toDoList, changeDescView);
+    toDoListConsole.appendChild(generateEditTitle(toDoList));
+    toDoListConsole.appendChild(generateEditDescView);
   }
 };
 
 const generateEditDesc = function(list, onclickFunc) {
   const editDescDiv = document.createElement("div");
-  const descBox = document.createElement("input");
-  descBox.type = "text";
-  descBox.value = list.desc;
+  const descBox = createTextBox(document, list.desc, "description");
   descBox.id = "editDesc";
-
   const descButton = createButton(document, "submit", onclickFunc);
-
   appendChildren(editDescDiv, descBox, descButton);
   return editDescDiv;
 };
 
 const loadItemEditConsole = function(toDoListId, item) {
-  document.getElementById("toDoListConsole").innerHTML = "";
-  document
-    .getElementById("toDoListConsole")
-    .appendChild(generateEditDesc(item, editItem.bind(null, toDoListId, item)));
+  const toDoListConsole = document.getElementById("toDoListConsole");
+  const editItemView = editItem.bind(null, toDoListId, item);
+  const generateEditDescView = generateEditDesc(item, editItemView);
+  toDoListConsole.innerHTML = "";
+  toDoListConsole.appendChild(generateEditDescView);
 };
 
 const generateEditTitle = function(toDoList) {
   const editTitleView = document.createElement("fieldSet");
   const legend = document.createElement("legend");
   legend.innerText = "Edit Todo List";
-
   const titleLabel = createLabel(document, "Title : ");
-
   const titleBox = createTextBox(document, toDoList.title, "title", "editBox");
   titleBox.id = "editTitle";
-
   const titleButton = createButton(
     document,
     "Submit",
@@ -101,16 +93,20 @@ const generateItem = function(item, listId) {
   checkBox.type = "checkbox";
   checkBox.onclick = toggleItemStatus.bind(null, listId, item.id);
   checkBox.checked = item.isDone;
-
-  const editItemButton = document.createElement("button");
-  editItemButton.className = "iconButton";
-  editItemButton.onclick = loadItemEditConsole.bind(null, listId, item);
-  editItemButton.innerText = "\u270E";
-
-  const deleteItemButton = document.createElement("button");
-  deleteItemButton.className = "iconButton";
-  deleteItemButton.onclick = deleteItem.bind(null, listId, item.id);
-  deleteItemButton.innerText = "\uD83D\uDDD1";
+  const loadEditConsole = loadItemEditConsole.bind(null, listId, item);
+  const editItemButton = createButton(
+    document,
+    PENCIL,
+    loadEditConsole,
+    "iconButton"
+  );
+  const deleteCurrItem = deleteItem.bind(null, listId, item.id);
+  const deleteItemButton = createButton(
+    document,
+    WASTEBIN,
+    deleteCurrItem,
+    "iconButton"
+  );
 
   appendChildren(itemDiv, checkBox, itemDesc, editItemButton, deleteItemButton);
 
@@ -172,11 +168,7 @@ const generateAddItemDiv = function(listId) {
 
   const descLabel = document.createElement("label");
   descLabel.innerText = "Description : ";
-
-  const addButton = document.createElement("button");
-  addButton.onclick = addToDoItem.bind(null, listId);
-  addButton.innerText = "\u2795";
-
+  const addButton = createButton(document, ADD, addToDoItem.bind(null, listId));
   appendChildren(addItemView, descLabel, descBox, addButton);
   return addItemView;
 };
