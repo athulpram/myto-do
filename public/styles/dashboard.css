@@ -17,10 +17,9 @@
 }
 
 input[type="checkbox"] {
-  width: 30px;
-  height: 30px;
+  zoom: 2.2;
+  margin-bottom: 8px;
 }
-
 .listDiv {
   background: black;
   color: white;
@@ -46,4 +45,31 @@ input[type="checkbox"] {
 .newListElement {
   vertical-align: middle;
   display: table-cell;
+}
+
+.toDoListDesc {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.iconButton {
+  height: 32px;
+  width: 32px;
+  font-size: 20px;
+  border: 2px solid silver;
+  border-radius: 20%;
+  float: right;
+  margin-right: 10px;
+  margin-top: 8px;
+}
+
+.itemsDiv {
+  overflow: scroll;
+  height: 540px;
+}
+
+.itemDiv {
+  background: grey;
+  border: 0.5px solid white;
+  height: 50px;
 }
