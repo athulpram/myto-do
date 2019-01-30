@@ -1,27 +1,28 @@
 const PENCIL = "\u270E";
 const WASTEBIN = "\uD83D\uDDD1";
 
-const appendChildren = function(parent, ...children) {
-  children.forEach(function(child) {
-    parent.appendChild(child);
-  });
-};
-
 const getToDoLists = function(toDoListDiv, myToDo) {
   Object.keys(myToDo).map(toDoListKey => {
     let toDoDiv = document.createElement("div");
     toDoDiv.id = toDoListKey;
 
-    const editButton = document.createElement("button");
-    editButton.innerText = PENCIL;
-    editButton.onclick = loadEditConsole.bind(null, myToDo[toDoListKey]);
+    const editButton = createButton(
+      document,
+      PENCIL,
+      loadEditConsole.bind(null, myToDo[toDoListKey]),
+      "iconButton"
+    );
 
-    const deleteButton = document.createElement("button");
-    deleteButton.innerText = WASTEBIN;
-    deleteButton.onclick = deleteToDoList.bind(null, myToDo[toDoListKey]);
+    const deleteButton = createButton(
+      document,
+      WASTEBIN,
+      deleteToDoList.bind(null, myToDo[toDoListKey]),
+      "iconButton"
+    );
 
     const toDoHeading = document.createElement("div");
     toDoHeading.innerText = myToDo[toDoListKey].title;
+    toDoHeading.className = "toDoHeading";
     toDoHeading.onclick = loadConsole.bind(null, myToDo[toDoListKey]);
 
     appendChildren(toDoDiv, toDoHeading, editButton, deleteButton);
@@ -52,9 +53,7 @@ const generateEditDesc = function(list, onclickFunc) {
   descBox.value = list.desc;
   descBox.id = "editDesc";
 
-  const descButton = document.createElement("button");
-  descButton.onclick = onclickFunc;
-  descButton.innerText = "submit";
+  const descButton = createButton(document, "submit", onclickFunc);
 
   appendChildren(editDescDiv, descBox, descButton);
   return editDescDiv;
@@ -68,19 +67,23 @@ const loadItemEditConsole = function(toDoListId, item) {
 };
 
 const generateEditTitle = function(toDoList) {
-  const editTitleDiv = document.createElement("div");
+  const editTitleView = document.createElement("fieldSet");
+  const legend = document.createElement("legend");
+  legend.innerText = "Edit Todo List";
 
-  const titleBox = document.createElement("input");
-  titleBox.type = "text";
-  titleBox.value = toDoList.title;
+  const titleLabel = createLabel(document, "Title : ");
+
+  const titleBox = createTextBox(document, toDoList.title, "title", "editBox");
   titleBox.id = "editTitle";
 
-  const titleButton = document.createElement("button");
-  titleButton.innerText = "Submit";
-  titleButton.onclick = changeTitle.bind(null, toDoList.id);
-
-  appendChildren(editTitleDiv, titleBox, titleButton);
-  return editTitleDiv;
+  const titleButton = createButton(
+    document,
+    "Submit",
+    changeTitle.bind(null, toDoList.id),
+    "editBoxButton"
+  );
+  appendChildren(editTitleView, legend, titleLabel, titleBox, titleButton);
+  return editTitleView;
 };
 
 const generateTitle = function(title) {
