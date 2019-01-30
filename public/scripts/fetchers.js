@@ -1,118 +1,57 @@
-const deleteItem = function(listId, itemId) {
-  fetch("/deletetodoitem", {
-    method: "POST",
+const fetcher = function(url, method, jsonData, fetchCallback) {
+  fetch(url, {
+    method: method,
     header: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      listId: listId,
-      itemId: itemId
-    })
+    body: JSON.stringify(jsonData)
   }).then(response => {
-    loadToDoLists();
+    fetchCallback();
   });
+};
+const deleteItem = function(listId, itemId) {
+  const jsonData = { listId, itemId };
+  fetcher("/deletetodoitem", "POST", jsonData, loadToDoLists);
 };
 
 const toggleItemStatus = function(listId, itemId) {
-  fetch("/toggledone", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      listId: listId,
-      itemId: itemId
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
+  const jsonData = { listId, itemId };
+  fetcher("/toggledone", "POST", jsonData, loadToDoLists);
 };
 
 const addToDoItem = function(listId) {
-  fetch("/addtodoitem", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      toDoItem: { desc: document.getElementById(listId + "item").value },
-      listId: listId
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
+  const desc = document.getElementById(listId + "item").value;
+  const jsonData = { toDoItem: { desc }, listId };
+  fetcher("/addtodoitem", "POST", jsonData, loadToDoLists);
 };
 
 const editItem = function(listId, item) {
-  fetch("changeitemdesc", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      listId,
-      itemId: item.id,
-      desc: document.getElementById("editDesc").value
-    })
-  }).then(res => {
-    loadToDoLists();
-  });
+  const desc = document.getElementById("editDesc").value;
+  const jsonData = { listId, itemId: item.id, desc };
+  fetcher("/changeitemdesc", "POST", jsonData, loadToDoLists);
 };
 
 const changeDesc = function(toDoListId) {
-  fetch("/changetododesc", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      desc: document.getElementById("editDesc").value,
-      listId: toDoListId
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
+  const desc = document.getElementById("editDesc").value;
+  const jsonData = { desc, listId: toDoListId };
+  fetcher("/changetododesc", "POST", jsonData, loadToDoLists);
 };
 
-const changeTitle = function(toDoListId) {
-  fetch("/changetodotitle", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      title: document.getElementById("editTitle").value,
-      listId: toDoListId
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
+const changeTitle = function(listId) {
+  const title = document.getElementById("editTitle").value;
+  const jsonData = { title, listId };
+  fetcher("/changetodotitle", "POST", jsonData, loadToDoLists);
 };
 
-const deleteToDoList = function(toDoList) {
-  fetch("/deletetodolist", {
-    method: "POST",
-    body: JSON.stringify({
-      listId: toDoList.id
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
+const deleteToDoList = function(listId) {
+  fetcher("/deletetodolist", "POST", { listId }, loadToDoLists);
 };
 
 const createToDoList = function() {
-  fetch("/createtodolist", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      title: document.getElementById("title").value,
-      desc: document.getElementById("desc").value
-    })
-  }).then(response => {
-    loadToDoLists();
-  });
+  const title = document.getElementById("title").value;
+  const desc = document.getElementById("desc").value;
+  const jsonData = { title, desc };
+  fetcher("/createtodolist", "POST", jsonData, loadToDoLists);
 };
 
 const loadToDoLists = function() {

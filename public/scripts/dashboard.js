@@ -6,7 +6,7 @@ const getToDoLists = function(toDoListDiv, myToDo) {
     let toDoDiv = document.createElement("div");
     toDoDiv.id = toDoListKey;
     const editConsole = loadEditConsole.bind(null, myToDo[toDoListKey]);
-    const deleteToDo = deleteToDoList.bind(null, myToDo[toDoListKey]);
+    const deleteToDo = deleteToDoList.bind(null, myToDo[toDoListKey].id);
     const editButton = createButton(
       document,
       PENCIL,
