@@ -4,7 +4,7 @@ const handleDashboard = function(cachedData, req, res) {
 
   if (hasSession(cachedData.loggedInUsers, sessionId)) {
     const username = getUsername(cachedData.loggedInUsers, sessionId);
-    let content = cachedData.publicFiles["./public/dashboard.html"];
+    let content = cachedData.publicFiles["./public/dashboardTemplate.html"];
     content = content.replace(
       "__username__",
       cachedData.users[username].getFirstName()

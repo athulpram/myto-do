@@ -37,8 +37,9 @@ const validateUser = function(cachedData, req, res, next) {
   const sessionId = req.parsedCookie.sessionId;
   if (hasSession(cachedData.loggedInUsers, sessionId)) {
     next();
+    return;
   }
-  requestHandler(req, res, next);
+  requestHandler(cachedData, req, res, next);
 };
 
 const initializeServer = function(fs) {
@@ -74,6 +75,7 @@ const initializeServer = function(fs) {
   app.post("/signup", signup);
   app.post("/login", login);
   app.get("/logout", handleLogout.bind(null, cachedData));
+  app.use(validateUser.bind(null, cachedData));
   app.get("/dashboard.html", dashboardHandler);
   app.get("/gettodoitems", getToDos.bind(null, cachedData));
   app.post("/addtodoitem", addNewItem);
@@ -84,20 +86,19 @@ const initializeServer = function(fs) {
   app.post("/changeitemdesc", editItemDesc);
   app.post("/toggledone", toggleDone.bind(null, cachedData, storeUserDetails));
   app.post("/createtodolist", addToDoList);
-  app.use(requestHandler);
-  app.use(validateUser.bind(null, cachedData));
+  app.use(requestHandler.bind(null, cachedData));
 };
 
 const isFilePresent = file =>
   Object.keys(cachedData.publicFiles).includes(file);
 
-const requestHandler = (req, res) => {
+const requestHandler = (cachedData, req, res) => {
   const url = getFilePath(req.url);
   if (isFilePresent(url)) {
     send(res, cachedData.publicFiles[url]);
     return;
   }
-  send(res, "file not found", 404, "error");
+  send(res, cachedData.publicFiles["./public/404errorPage.html"], 404, "error");
   return;
 };
 
