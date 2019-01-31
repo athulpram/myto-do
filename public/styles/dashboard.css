@@ -7,13 +7,15 @@
   width: 350px;
   height: 525px;
   overflow: scroll;
-  background: grey;
+  background: black;
 }
 
 .toDoListConsoleDiv {
   width: 1050px;
   height: 665 px;
-  border: 1px solid black;
+  border: 1px solid white;
+  background: white;
+  color: black;
 }
 
 input[type="checkbox"] {
@@ -33,11 +35,13 @@ input[type="checkbox"] {
   font-size: 20px;
   display: flex;
   height: 50px;
+  background: grey;
 }
 
 .toDoHeading {
   margin-top: 15px;
   width: 260px;
+  cursor: pointer;
 }
 
 .selectedToDoDiv {
@@ -63,11 +67,12 @@ input[type="checkbox"] {
   height: 32px;
   width: 32px;
   font-size: 20px;
-  border: 2px solid silver;
   border-radius: 20%;
   float: right;
   margin-right: 10px;
   margin-top: 8px;
+  background: white;
+  cursor: pointer;
 }
 
 .itemsDiv {

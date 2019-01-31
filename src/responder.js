@@ -22,4 +22,19 @@ const redirect = function(res, location) {
   res.end();
 };
 
-module.exports = { send, redirect, setCookie, clearCookie };
+const hasSession = function(loggedInUsers, sessionId) {
+  return Object.keys(loggedInUsers).includes(sessionId);
+};
+
+const getUsername = function(loggedInUsers, sessionId) {
+  return loggedInUsers[sessionId];
+};
+
+module.exports = {
+  send,
+  redirect,
+  setCookie,
+  clearCookie,
+  hasSession,
+  getUsername
+};

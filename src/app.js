@@ -6,14 +6,14 @@ const { parseArgs } = require("./util/util.js");
 const {
   getToDos,
   addToDo,
-  addToDoItem,
-  deleteToDoList,
-  deleteToDoItem,
+  addItem,
+  deleteToDo,
+  deleteItem,
   changeToDoTitle,
   changeToDoDesc,
   changeItemDesc,
   toggleDone
-} = require("./toDoHandler.js");
+} = require("./handlers.js");
 
 const WebFramework = require("./webFramework");
 const app = new WebFramework();
@@ -44,25 +44,33 @@ const initializeServer = function(fs) {
   const login = handleLogin.bind(null, cachedData);
   const dashboardHandler = handleDashboard.bind(null, cachedData);
   const addToDoList = addToDo.bind(null, cachedData, storeUserDetails);
-  const addItem = addToDoItem.bind(null, cachedData, storeUserDetails);
-  const deleteItem = deleteToDoItem.bind(null, cachedData, storeUserDetails);
-  const deleteToDo = deleteToDoList.bind(null, cachedData, storeUserDetails);
+  const addNewItem = addItem.bind(null, cachedData, storeUserDetails);
+  const deleteExistingItem = deleteItem.bind(
+    null,
+    cachedData,
+    storeUserDetails
+  );
+  const deleteExistingToDo = deleteToDo.bind(
+    null,
+    cachedData,
+    storeUserDetails
+  );
   const editTitle = changeToDoTitle.bind(null, cachedData, storeUserDetails);
   const editToDoDesc = changeToDoDesc.bind(null, cachedData, storeUserDetails);
   const editItemDesc = changeItemDesc.bind(null, cachedData, storeUserDetails);
 
-  cachedData.loggedInUsers = [];
+  cachedData.loggedInUsers = {};
 
   app.use(readCookies);
   app.use(readPostedData);
   app.post("/signup", signup);
   app.post("/login", login);
-  app.get("/logout", handleLogout);
+  app.get("/logout", handleLogout.bind(null, cachedData));
   app.get("/dashboard.html", dashboardHandler);
   app.get("/gettodoitems", getToDos.bind(null, cachedData));
-  app.post("/addtodoitem", addItem);
-  app.post("/deletetodoitem", deleteItem);
-  app.post("/deletetodolist", deleteToDo);
+  app.post("/addtodoitem", addNewItem);
+  app.post("/deletetodoitem", deleteExistingItem);
+  app.post("/deletetodolist", deleteExistingToDo);
   app.post("/changetodotitle", editTitle);
   app.post("/changetododesc", editToDoDesc);
   app.post("/changeitemdesc", editItemDesc);

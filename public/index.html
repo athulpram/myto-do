@@ -21,6 +21,7 @@
               name="firstName"
               placeholder="firstName"
               class="signupField"
+              required
             /><br />
             <label>Last Name <span class="mandatory">*</span> : </label>
             <input
@@ -28,6 +29,7 @@
               name="lastName"
               placeholder="lastName"
               class="signupField"
+              required
             /><br />
             <label>Username <span class="mandatory">*</span> : </label>
             <input
@@ -35,6 +37,8 @@
               name="username"
               placeholder="username"
               class="signupField"
+              minlength="6"
+              required
             /><br />
             <label>Password <span class="mandatory">*</span> : </label>
             <input
@@ -42,6 +46,8 @@
               name="password"
               placeholder="password"
               class="signupField"
+              minlength="8"
+              required
             /><br />
             <input type="submit" value="Sign Up" />
           </fieldset>
@@ -57,6 +63,7 @@
               name="username"
               placeholder="username"
               class="loginField"
+              required
             /><br />
             <label>Password : </label>
             <input
@@ -64,6 +71,7 @@
               name="password"
               placeholder="password"
               class="loginField"
+              required
             /><br />
             <input type="submit" value="Log In" />
           </fieldset>

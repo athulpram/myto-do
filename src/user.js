@@ -1,17 +1,17 @@
-const ToDoList = require("./toDoList");
+const ToDo = require("./toDo");
 const { deleteProperty, addProperty } = require("./util/objectMethods.js");
 
 class User {
-  constructor(userDetails) {
-    this.username = userDetails.username;
-    this.password = userDetails.password;
-    this.firstName = userDetails.firstName;
-    this.lastName = userDetails.lastName;
-    this.toDoLists = {};
-    Object.keys(userDetails.toDoLists).reduce(function(lists, toDoListKey) {
-      lists[toDoListKey] = new ToDoList(userDetails.toDoLists[toDoListKey]);
-      return lists;
-    }, this.toDoLists);
+  constructor(details) {
+    this.username = details.username;
+    this.password = details.password;
+    this.firstName = details.firstName;
+    this.lastName = details.lastName;
+    this.toDos = {};
+    Object.keys(details.toDos).reduce(function(toDo, toDoKey) {
+      toDo[toDoKey] = new ToDo(details.toDos[toDoKey]);
+      return toDo;
+    }, this.toDos);
   }
   getFirstName() {
     return this.firstName;
@@ -19,20 +19,18 @@ class User {
   isValidPassword(password) {
     return this.password == password;
   }
-  deleteToDoList(toDoId) {
-    deleteProperty(this.toDoLists, toDoId);
+  deleteToDo(toDoId) {
+    deleteProperty(this.toDos, toDoId);
   }
-  addToDoList(toDoList) {
-    let toDoListId = this.getNextToDoListId();
-    toDoList.id = toDoListId;
-    toDoList.items = {};
-    addProperty(this.toDoLists, toDoListId, new ToDoList(toDoList));
+  addToDoList(toDo) {
+    const toDoId = this.getNextToDoListId();
+    toDo.id = toDoId;
+    toDo.items = {};
+    addProperty(this.toDos, toDoId, new ToDo(toDo));
   }
   getNextToDoListId() {
-    const toDoListsKey = Object.keys(this.toDoLists).sort(
-      (key1, key2) => key1 - key2
-    );
-    const nextId = +toDoListsKey[toDoListsKey.length - 1] + 1 || 0;
+    const toDosKey = Object.keys(this.toDos).sort((key1, key2) => key1 - key2);
+    const nextId = +toDosKey[toDosKey.length - 1] + 1 || 0;
     return nextId;
   }
 }
