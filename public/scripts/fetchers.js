@@ -9,52 +9,83 @@ const fetcher = function(url, method, jsonData, fetchCallback) {
     fetchCallback();
   });
 };
-const deleteItem = function(listId, itemId) {
+const deleteItem = function(document, listId, itemId) {
   const jsonData = { listId, itemId };
-  fetcher("/deletetodoitem", "POST", jsonData, loadToDoLists);
+  fetcher(
+    "/deletetodoitem",
+    "POST",
+    jsonData,
+    loadToDoLists.bind(null, document)
+  );
 };
 
-const toggleItemStatus = function(listId, itemId) {
+const toggleItemStatus = function(document, listId, itemId) {
   const jsonData = { listId, itemId };
-  fetcher("/toggledone", "POST", jsonData, loadToDoLists);
+  fetcher("/toggledone", "POST", jsonData, loadToDoLists.bind(null, document));
 };
 
-const addToDoItem = function(listId) {
+const addToDoItem = function(document, listId) {
   const desc = document.getElementById(listId + "item").value;
   const jsonData = { toDoItem: { desc }, listId };
-  fetcher("/addtodoitem", "POST", jsonData, loadToDoLists);
+  fetcher("/addtodoitem", "POST", jsonData, loadToDoLists.bind(null, document));
 };
 
-const editItem = function(listId, item) {
+const editItem = function(document, listId, item) {
   const desc = document.getElementById("editDesc").value;
   const jsonData = { listId, itemId: item.id, desc };
-  fetcher("/changeitemdesc", "POST", jsonData, loadToDoLists);
+  fetcher(
+    "/changeitemdesc",
+    "POST",
+    jsonData,
+    loadToDoLists.bind(null, document)
+  );
 };
 
-const changeDesc = function(toDoListId) {
+const changeDesc = function(document, toDoListId) {
   const desc = document.getElementById("editDesc").value;
   const jsonData = { desc, listId: toDoListId };
-  fetcher("/changetododesc", "POST", jsonData, loadToDoLists);
+  fetcher(
+    "/changetododesc",
+    "POST",
+    jsonData,
+    loadToDoLists.bind(null, document)
+  );
 };
 
-const changeTitle = function(listId) {
+const changeTitle = function(document, listId) {
   const title = document.getElementById("editTitle").value;
   const jsonData = { title, listId };
-  fetcher("/changetodotitle", "POST", jsonData, loadToDoLists);
+  fetcher(
+    "/changetodotitle",
+    "POST",
+    jsonData,
+    loadToDoLists.bind(null, document)
+  );
 };
 
-const deleteToDoList = function(listId) {
-  fetcher("/deletetodolist", "POST", { listId }, loadToDoLists);
+const deleteToDoList = function(document, listId) {
+  fetcher(
+    "/deletetodolist",
+    "POST",
+    { listId },
+    loadToDoLists.bind(null, document)
+  );
 };
 
-const createToDoList = function() {
+const createToDoList = function(document) {
+  console.log("here");
   const title = document.getElementById("title").value;
   const desc = document.getElementById("desc").value;
   const jsonData = { title, desc };
-  fetcher("/createtodolist", "POST", jsonData, loadToDoLists);
+  fetcher(
+    "/createtodolist",
+    "POST",
+    jsonData,
+    loadToDoLists.bind(null, document)
+  );
 };
 
-const loadToDoLists = function() {
+const loadToDoLists = function(document) {
   fetch("/gettodoitems")
     .then(function(response) {
       return response.json();
@@ -62,6 +93,6 @@ const loadToDoLists = function() {
     .then(function(myToDo) {
       const toDoListsDiv = document.getElementById("toDoLists");
       toDoListsDiv.innerHTML = "";
-      getToDoLists(toDoListsDiv, myToDo);
+      getToDoLists(document, toDoListsDiv, myToDo);
     });
 };

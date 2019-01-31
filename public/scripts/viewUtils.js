@@ -1,3 +1,5 @@
+const getElement = (document, id) => document.getElementById(id);
+
 const appendChildren = function(parent, ...children) {
   children.forEach(function(child) {
     parent.appendChild(child);
@@ -36,4 +38,20 @@ const createTextBox = function(
   textBox.placeholder = placeholder;
   textBox.className = className;
   return textBox;
+};
+
+const createFieldSet = function(document, legendTag) {
+  const fieldset = document.createElement("fieldset");
+  const legend = document.createElement("legend");
+  legend.innerText = legendTag;
+  fieldset.appendChild(legend);
+  return fieldset;
+};
+
+const createTextArea = function(document, type, name, placeholder) {
+  const textArea = document.createElement("textarea");
+  textArea.type = type;
+  textArea.name = name;
+  textArea.placeholder = placeholder;
+  return textArea;
 };

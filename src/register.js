@@ -1,4 +1,4 @@
-const { redirect } = require("./responder");
+const { redirect, clearCookie, setCookie } = require("./responder");
 const { parseArgs } = require("./util/util");
 const User = require("./user");
 
@@ -13,7 +13,7 @@ const handleSignup = function(storeUserDetails, cachedData, req, res) {
     usersData[username] = new User(userDetails);
     storeUserDetails(JSON.stringify(usersData));
     cachedData.loggedInUsers.push(username);
-    res.setHeader("Set-Cookie", `username=${username}`);
+    setCookie(res, "username", username);
     redirect(res, "/dashboard.html");
     return;
   }
@@ -29,25 +29,26 @@ const handleLogin = function(cachedData, req, res) {
   const username = userDetails.username;
   const password = userDetails.password;
   const userData = cachedData.users;
-  if (
-    !isValidUsername(userData, username) &&
-    userData[username].isValidPassword(password)
-  ) {
+  if (validateLoginCredentials(userData, username, password)) {
     if (!cachedData.loggedInUsers.includes(username)) {
       cachedData.loggedInUsers.push(username);
     }
-    res.setHeader("Set-Cookie", `username=${username}`);
+    setCookie(res, "username", username);
     redirect(res, "/dashboard.html");
     return;
   }
   redirect(res, "/index.html");
 };
 
-const handleLogout = function(req, res) {
-  res.setHeader(
-    "Set-Cookie",
-    "username=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+const validateLoginCredentials = function(userData, username, password) {
+  return (
+    !isValidUsername(userData, username) &&
+    userData[username].isValidPassword(password)
   );
+};
+
+const handleLogout = function(req, res) {
+  clearCookie(res, "username");
   redirect(res, "/index.html");
 };
 

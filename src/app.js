@@ -13,7 +13,8 @@ const {
   changeToDoDesc,
   changeItemDesc,
   toggleDone
-} = require("./handleToDo.js");
+} = require("./toDoHandler.js");
+
 const WebFramework = require("./webFramework");
 const app = new WebFramework();
 const cachedData = {};
@@ -34,13 +35,22 @@ const readCookies = function(req, res, next) {
 
 const initializeServer = function(fs) {
   const userData = "./private/userData.json";
+
   cachedData.publicFiles = loadFiles("./public", fs);
   cachedData.users = loadUsers(userData, fs);
+
   const storeUserDetails = writeToFile.bind(null, fs, userData);
   const signup = handleSignup.bind(null, storeUserDetails, cachedData);
   const login = handleLogin.bind(null, cachedData);
   const dashboardHandler = handleDashboard.bind(null, cachedData);
   const addToDoList = addToDo.bind(null, cachedData, storeUserDetails);
+  const addItem = addToDoItem.bind(null, cachedData, storeUserDetails);
+  const deleteItem = deleteToDoItem.bind(null, cachedData, storeUserDetails);
+  const deleteToDo = deleteToDoList.bind(null, cachedData, storeUserDetails);
+  const editTitle = changeToDoTitle.bind(null, cachedData, storeUserDetails);
+  const editToDoDesc = changeToDoDesc.bind(null, cachedData, storeUserDetails);
+  const editItemDesc = changeItemDesc.bind(null, cachedData, storeUserDetails);
+
   cachedData.loggedInUsers = [];
 
   app.use(readCookies);
@@ -50,30 +60,12 @@ const initializeServer = function(fs) {
   app.get("/logout", handleLogout);
   app.get("/dashboard.html", dashboardHandler);
   app.get("/gettodoitems", getToDos.bind(null, cachedData));
-  app.post(
-    "/addtodoitem",
-    addToDoItem.bind(null, cachedData, storeUserDetails)
-  );
-  app.post(
-    "/deletetodoitem",
-    deleteToDoItem.bind(null, cachedData, storeUserDetails)
-  );
-  app.post(
-    "/deletetodolist",
-    deleteToDoList.bind(null, cachedData, storeUserDetails)
-  );
-  app.post(
-    "/changetodotitle",
-    changeToDoTitle.bind(null, cachedData, storeUserDetails)
-  );
-  app.post(
-    "/changetododesc",
-    changeToDoDesc.bind(null, cachedData, storeUserDetails)
-  );
-  app.post(
-    "/changeitemdesc",
-    changeItemDesc.bind(null, cachedData, storeUserDetails)
-  );
+  app.post("/addtodoitem", addItem);
+  app.post("/deletetodoitem", deleteItem);
+  app.post("/deletetodolist", deleteToDo);
+  app.post("/changetodotitle", editTitle);
+  app.post("/changetododesc", editToDoDesc);
+  app.post("/changeitemdesc", editItemDesc);
   app.post("/toggledone", toggleDone.bind(null, cachedData, storeUserDetails));
   app.post("/createtodolist", addToDoList);
   app.use(requestHandler);
