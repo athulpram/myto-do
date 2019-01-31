@@ -1,7 +1,7 @@
 const { loadFiles, loadUsers } = require("./loadData.js");
 const { handleSignup, handleLogin, handleLogout } = require("./register.js");
 const { handleDashboard } = require("./dashboard.js");
-const { send } = require("./responder.js");
+const { redirect, send, hasSession } = require("./responder.js");
 const { parseArgs } = require("./util/util.js");
 const {
   getToDos,
@@ -31,6 +31,14 @@ const readCookies = function(req, res, next) {
     req.parsedCookie = parsedCookie;
   }
   next();
+};
+
+const validateUser = function(cachedData, req, res, next) {
+  const sessionId = req.parsedCookie.sessionId;
+  if (hasSession(cachedData.loggedInUsers, sessionId)) {
+    next();
+  }
+  requestHandler(req, res, next);
 };
 
 const initializeServer = function(fs) {
@@ -77,6 +85,7 @@ const initializeServer = function(fs) {
   app.post("/toggledone", toggleDone.bind(null, cachedData, storeUserDetails));
   app.post("/createtodolist", addToDoList);
   app.use(requestHandler);
+  app.use(validateUser.bind(null, cachedData));
 };
 
 const isFilePresent = file =>
