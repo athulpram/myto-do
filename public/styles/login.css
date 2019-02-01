@@ -1,27 +1,85 @@
 .signupDiv {
-  width: 50%;
-  height: 100%;
+  width: 50vw;
+  height: 100vh;
   background-color: grey;
+  display: flex;
+  flex-direction: column;
   border-right: 1px Solid white;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
 }
 
 .loginDiv {
-  width: 50%;
-  height: 100%;
-  background: grey;
-  border-left: 1px solid white;
+  width: 50vw;
+  height: 100vh;
+  background-color: grey;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px Solid white;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
 }
 
 .loginField {
   height: 30px;
-  margin: 2px;
+  margin: 5px;
+  width: 200px;
+  border-radius: 8px;
+  align-self: center;
+  font-size: 15px;
 }
 
 .signupField {
   height: 30px;
-  margin: 2px;
+  margin: 5px;
+  width: 200px;
+  border-radius: 8px;
+  font-size: 15px;
+  align-self: center;
+}
+
+.signupBtn {
+  height: 30px;
+  margin: 5px;
+  width: 200px;
+  border-radius: 8px;
+  font-size: 15px;
+  background: skyblue;
+  align-self: center;
+}
+.loginBtn {
+  height: 30px;
+  margin: 5px;
+  width: 200px;
+  border-radius: 8px;
+  align-self: center;
+  font-size: 15px;
+  background: skyblue;
 }
 
 fieldset {
   width: 400px;
+  margin: 0 auto;
+}
+
+.signupFields {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.loginFields {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
 }

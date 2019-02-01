@@ -74,11 +74,11 @@ const generateEditDescDiv = function(document, list, onclickFunc) {
 
 const loadItemEditConsole = function(document, toDoListId, item) {
   const toDoListConsole = getElement(document, "toDoListConsole");
-  const editTtemDesc = editItem.bind(null, document, toDoListId, item);
+  const editItemDesc = editItem.bind(null, document, toDoListId, item);
   const generateEditDescView = generateEditDescDiv(
     document,
     item,
-    editTtemDesc
+    editItemDesc
   );
   toDoListConsole.innerHTML = "";
   toDoListConsole.appendChild(generateEditDescView);

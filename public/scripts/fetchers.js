@@ -83,6 +83,8 @@ const createToDoList = function(document) {
     jsonData,
     loadToDoLists.bind(null, document)
   );
+  document.getElementById("title").value = "";
+  document.getElementById("desc").value = "";
 };
 
 const loadToDoLists = function(document) {

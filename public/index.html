@@ -8,48 +8,46 @@
   </head>
 
   <body>
-    <header class="headerDiv"></header>
+    <header class="headerDiv">Myto-do</header>
 
     <div id="main" class="mainDiv">
       <div id="signup" class="signupDiv">
         <form action="/signup" method="POST">
           <fieldset>
             <legend>Sign Up</legend>
-            <label>First Name <span class="mandatory">*</span> : </label
-            ><input
-              type="text"
-              name="firstName"
-              placeholder="firstName"
-              class="signupField"
-              required
-            /><br />
-            <label>Last Name <span class="mandatory">*</span> : </label>
-            <input
-              type="text"
-              name="lastName"
-              placeholder="lastName"
-              class="signupField"
-              required
-            /><br />
-            <label>Username <span class="mandatory">*</span> : </label>
-            <input
-              type="text"
-              name="username"
-              placeholder="username"
-              class="signupField"
-              minlength="6"
-              required
-            /><br />
-            <label>Password <span class="mandatory">*</span> : </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="password"
-              class="signupField"
-              minlength="8"
-              required
-            /><br />
-            <input type="submit" value="Sign Up" />
+            <div class="signupFields">
+              <input
+                type="text"
+                name="firstName"
+                placeholder="firstName"
+                class="signupField"
+                required
+              /><br />
+              <input
+                type="text"
+                name="lastName"
+                placeholder="lastName"
+                class="signupField"
+                required
+              /><br />
+              <input
+                type="text"
+                name="username"
+                placeholder="username"
+                class="signupField"
+                minlength="6"
+                required
+              /><br />
+              <input
+                type="password"
+                name="password"
+                placeholder="password"
+                class="signupField"
+                minlength="8"
+                required
+              /><br />
+              <input class="signupBtn" type="submit" value="Sign Up" />
+            </div>
           </fieldset>
         </form>
       </div>
@@ -57,23 +55,23 @@
         <form action="/login" method="POST">
           <fieldset>
             <legend>Log In</legend>
-            <label>Username : </label>
-            <input
-              type="text"
-              name="username"
-              placeholder="username"
-              class="loginField"
-              required
-            /><br />
-            <label>Password : </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="password"
-              class="loginField"
-              required
-            /><br />
-            <input type="submit" value="Log In" />
+            <div class="loginFields">
+              <input
+                type="text"
+                name="username"
+                placeholder="username"
+                class="loginField"
+                required
+              /><br />
+              <input
+                type="password"
+                name="password"
+                placeholder="password"
+                class="loginField"
+                required
+              /><br />
+              <input class="loginBtn" type="submit" value="Log In" />
+            </div>
           </fieldset>
         </form>
       </div>
