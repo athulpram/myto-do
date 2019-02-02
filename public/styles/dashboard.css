@@ -1,87 +1,147 @@
 .toDoDiv {
   display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.listDiv {
+  height: 100%;
+  width: 25%;
+
+  background: black;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-heading {
+  display: flex;
+  justify-content: space-between;
+  background: rgb(42, 46, 46);
+  height: 10%;
+}
+
+.add-to-do {
+  color: white;
+  font-size: 30px;
+  margin: auto 0;
+  padding-right: 10px;
 }
 
 .toDoListsDiv {
   border: 1px solid black;
-  width: 350px;
-  height: 525px;
+
+  height: 100%;
+
   overflow: scroll;
   background: black;
 }
 
+.todos-title {
+  margin: auto;
+  font-weight: bold;
+  font-size: 24px;
+}
+
 .toDoListConsoleDiv {
-  width: 1050px;
-  height: 665 px;
+  width: 75%;
+  height: 100%;
+
   border: 1px solid white;
+
   background: white;
   color: black;
 }
 
-input[type="checkbox"] {
-  zoom: 2.2;
-  margin-bottom: 8px;
-}
-.listDiv {
-  background: black;
-  color: white;
-  border: 1px solid white;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-.toDoListNav {
-  color: white;
-  border: 2px solid black;
-  font-size: 20px;
+.overlay {
+  visibility: hidden;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
   display: flex;
-  height: 50px;
-  background: grey;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+
+  background: rgba(37, 37, 37, 0.918);
+
+  animation: animatezoom 0.6s;
 }
 
-.toDoHeading {
-  margin-top: 15px;
-  width: 260px;
-  cursor: pointer;
+.fa-sign-out-alt {
+  color: white;
 }
 
-.selectedToDoDiv {
-  background: grey;
-}
-
-.toDoListHeader {
-  background: grey;
-  font-size: 20px;
-  display: table;
-}
-.newListElement {
-  vertical-align: middle;
-  display: table-cell;
-}
-
-.toDoListDesc {
+.todos-title {
+  color: white;
   font-weight: bold;
-  font-size: 20px;
 }
 
-.iconButton {
-  height: 32px;
-  width: 32px;
+.add-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  border-radius: 10px;
+
+  width: 30%;
+  height: 50%;
+
+  background: black;
+}
+
+.add-item-field {
+  font-family: inherit;
   font-size: 20px;
-  border-radius: 20%;
-  float: right;
-  margin-right: 10px;
-  margin-top: 8px;
-  background: white;
+
+  border-radius: 10px;
+
+  width: 90%;
+  border: 0px;
+
+  background: rgb(80, 79, 79);
+  color: white;
+
+  background: inherit;
+  resize: none;
+
+  border-bottom: 1px solid rgb(116, 113, 113);
+
+  text-align: center;
+  outline: 0;
+}
+
+.add-item-field:focus {
+  border-bottom: 1px solid white;
+}
+
+.add-item-submit-btn {
+  width: 90%;
+  height: 10%;
+
+  border-radius: 10px;
+}
+
+.add-to-do-heading {
+  color: white;
+}
+
+.fa-times {
+  position: absolute;
+  color: white;
+  /* align-self: flex-end; */
+  font-size: 30px;
+  margin: 10px;
+  top: 0px;
+  right: 0px;
   cursor: pointer;
 }
 
-.itemsDiv {
-  overflow: scroll;
-  height: 540px;
-}
-
-.itemDiv {
-  background: grey;
-  border: 0.5px solid white;
-  height: 50px;
+.fas {
+  cursor: pointer;
 }

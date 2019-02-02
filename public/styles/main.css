@@ -1,16 +1,26 @@
 .mainDiv {
   display: flex;
-  height: 675px;
+  height: 100%;
 }
 
+html,
 body {
   margin: 0px;
+  height: 100%;
+  width: 100%;
+  font-family: "Open Sans", sans-serif;
 }
 
 .headerDiv {
-  height: 40px;
+  height: 10%;
   width: auto;
+
   background: black;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   color: white;
   font-size: 20px;
 }
@@ -37,3 +47,5 @@ legend {
   font-weight: bold;
   font-size: 20px;
 }
+
+

@@ -2,6 +2,13 @@ const PENCIL = "\u270E";
 const WASTEBIN = "\uD83D\uDDD1";
 const ADD = "\u2795";
 
+const openAddItem = () => {
+  document.getElementById("addItemOverlay").style.visibility = "visible";
+};
+const closeAddItem = () => {
+  document.getElementById("addItemOverlay").style.visibility = "hidden";
+};
+
 const getToDoLists = function(document, toDoListDiv, myToDo) {
   Object.keys(myToDo).map(toDoListKey => {
     let toDoDiv = document.createElement("div");
@@ -186,8 +193,8 @@ const generateAddItemDiv = function(document, listId) {
 
 window.onload = () => {
   loadToDoLists(document);
-  getElement(document, "addToDoBtn").onclick = createToDoList.bind(
-    null,
-    document
-  );
+  getElement(document, "addToDoBtn").onclick = () => {
+    createToDoList(document);
+    document.getElementById("addItemOverlay").style.visibility = "hidden";
+  };
 };

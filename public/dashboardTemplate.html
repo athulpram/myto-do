@@ -4,42 +4,48 @@
     <title>DashBoard</title>
     <link rel="stylesheet" type="text/css" href="/styles/main.css" />
     <link rel="stylesheet" type="text/css" href="/styles/dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+    />
     <script src="/scripts/fetchers.js"></script>
     <script src="/scripts/viewUtils.js"></script>
     <script src="/scripts/dashboard.js"></script>
   </head>
   <body>
     <header class="headerDiv">
-      <span class="welcomeText">Welcome __username__ </span
-      ><span><a href="/logout" class="logout">logout</a></span>
+      <span>My To-Do</span>
+      <span class="logout"
+        ><span class="username">__username__ </span
+        ><a href="/logout"><i class="fas fa-sign-out-alt"></i></a
+      ></span>
     </header>
-    <div id="main">
+    <div id="main" class="mainDiv">
       <div id="toDo" class="toDoDiv">
         <div class="listDiv">
-          <h3>To Dos List :</h3>
-          <div id="toDoLists" class="toDoListsDiv"></div>
-          <div class="addNewTodo">
-            <fieldset>
-              <legend style="color : white">Add To Do</legend>
-              <label>Title :</label><input
-                class="newListElement"
-                id="title"
-                type="text"
-                name="title"
-                placeholder="title"
-              /></br>
-              <label>Description : </label><textarea
-                class="newListElement"
-                name="desc"
-                id="desc"
-                type="text"
-                placeholder="description"
-              ></textarea></br>
-              <button id="addToDoBtn">Add +</button>
-            </fieldset>
+          <div class="sub-heading">
+            <span class="todos-title">To-Dos</span>
+            <i onclick="openAddItem()" class="fas fa-plus add-to-do"></i>
           </div>
+          <div id="toDoLists" class="toDoListsDiv"></div>
         </div>
         <div id="toDoListConsole" class="toDoListConsoleDiv"></div>
+      </div>
+      <div class="overlay" id="addItemOverlay">
+        
+        <div class="add-item">
+          <i onclick = "closeAddItem()"class="fas fa-times"></i>
+          <h2 class="add-to-do-heading">Add New To Do</h2>
+          <input class="add-item-field" id="title" type="text" name="title" placeholder="title" /></br>
+          <textarea class="add-item-field" name="desc" id="desc" type="text" placeholder="description"></textarea></br>
+          <button class="add-item-submit-btn" id="addToDoBtn">Add New Item</button>
+        </div>
       </div>
     </div>
   </body>
