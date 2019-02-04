@@ -1,79 +1,38 @@
 const { initializeServer, requestHandler } = require("./../src/app.js");
+const fs = require("fs");
 const assert = require("assert");
+const request = require("supertest");
+initializeServer(fs);
 
-const files = {
-  "./public/index.html": "This is index.html",
-  "./private/userData.json": `{
-  "a": {
-    "username": "a",
-    "password": "a",
-    "firstName": "a",
-    "lastName": "a",
-    "toDoLists": {
-      "0": {
-        "id": 0,
-        "title": "fadsdsf",
-        "desc": "sdffsdg",
-        "items": { "1": { "id": 1, "desc": "sdafdsf", "isDone": true } }
-      }
-    }
-  }
-}`
-};
-
-const dummyFs = {
-  readFileSync: function(filePath) {
-    return files[filePath];
-  },
-  readdirSync: function(directory) {
-    return ["index.html"];
-  }
-};
-
-const res = {
-  content: undefined,
-  write: function(content) {
-    this.content = content;
-  },
-  setHeader: (key, val) => {
-    res[key] = val;
-  },
-  statusCode: undefined,
-  statusMessage: undefined
-};
-
-const req = {
-  headers: {
-    cookie: ""
-  },
-  on: function(event, callback) {
-    callback();
-  },
-  url: undefined
-};
-
-describe("requestHandler", () => {
-  it("should change the response on res.end", () => {
-    res.end = function() {
-      assert.equal(res.content, "This is index.html");
-      assert.equal(res.statusCode, 200);
-      assert.equal(res.statusMessage, "Ok");
-    };
-    initializeServer(dummyFs);
-    req.url = "/";
-    requestHandler(req, res);
-    res.end();
-  });
-
-  it("should change the response on res.end give 404", () => {
-    res.end = function() {
-      assert.equal(res.content, "file not found");
-      assert.equal(res.statusCode, 404);
-      assert.equal(res.statusMessage, "error");
-    };
-    initializeServer(dummyFs);
-    req.url = "/invalidURL";
-    requestHandler(req, res);
-    res.end();
+describe.only("requestHandler", () => {
+  describe("index.html", () => {
+    it("should return status 200 and an html file", done => {
+      request(requestHandler)
+        .get("/")
+        .expect("Content-Type", /html/)
+        .expect(200)
+        .end(done);
+    });
+    it("should return status 404 for page not found", done => {
+      request(requestHandler)
+        .get("/wrongurl")
+        .expect(404)
+        .end(done);
+    });
+    it("redirect to homepage for invalid username", function(done) {
+      request(requestHandler)
+        .post("/login")
+        .send({ username: "username", password: "password" })
+        .expect("location", "/index.html")
+        .expect(302)
+        .end(done);
+    });
+    it("redirect to homepage for loging out ", function(done) {
+      request(requestHandler)
+        .get("/logout")
+        .expect("location", "/index.html")
+        .expect(302)
+        .end(done);
+    });
   });
 });

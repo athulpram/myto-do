@@ -15,15 +15,15 @@ const {
   toggleDone
 } = require("./handlers.js");
 
-const express = require('express');
+const express = require("express");
 const app = express();
 const cachedData = {};
 
-const writeToFile = function (fs, filePath, fileContents) {
-  fs.writeFile(filePath, fileContents, () => { });
+const writeToFile = function(fs, filePath, fileContents) {
+  fs.writeFile(filePath, fileContents, () => {});
 };
 
-const readCookies = function (req, res, next) {
+const readCookies = function(req, res, next) {
   req.parsedCookie = {};
   let parsedCookie = req.headers.cookie;
   if (parsedCookie) {
@@ -33,7 +33,7 @@ const readCookies = function (req, res, next) {
   next();
 };
 
-const validateUser = function (cachedData, req, res, next) {
+const validateUser = function(cachedData, req, res, next) {
   const sessionId = req.parsedCookie.sessionId;
   if (hasSession(cachedData.loggedInUsers, sessionId)) {
     next();
@@ -42,7 +42,7 @@ const validateUser = function (cachedData, req, res, next) {
   requestHandler(cachedData, req, res, next);
 };
 
-const initializeServer = function (fs) {
+const initializeServer = function(fs) {
   const userData = "./private/userData.json";
 
   cachedData.publicFiles = loadFiles("./public", fs);
@@ -72,9 +72,8 @@ const initializeServer = function (fs) {
 
   app.use(readCookies);
   app.use(readPostedData);
-  app.use(express.static('public/styles'));
-  app.use(express.static('public/'));
-  app.get('/', renderHome);
+  app.use(express.static("public/styles"));
+  app.use(express.static("public/"));
   app.post("/signup", signup);
   app.post("/login", login);
   app.get("/logout", handleLogout.bind(null, cachedData));
@@ -106,17 +105,11 @@ const requestHandler = (cachedData, req, res) => {
   return;
 };
 
-const renderHome = function (req, res) {
-  res.location('/index.html');
-  res.status(302);
-  res.end();
-}
-
 const getFilePath = url => {
   return "./public" + url;
 };
 
-const readPostedData = function (req, res, next) {
+const readPostedData = function(req, res, next) {
   let postedData = "";
   req.on("data", chunk => {
     postedData = postedData + chunk;

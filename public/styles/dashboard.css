@@ -29,8 +29,7 @@
 
 .toDoListsDiv {
   display: flex;
-  /* flex-direction: row; */
-  /* justify-content: space-between; */
+  flex-direction: column;
   border: 1px solid black;
   height: 100%;
   overflow: scroll;
@@ -117,7 +116,6 @@
 .fa-times {
   position: absolute;
   color: white;
-  /* align-self: flex-end; */
   font-size: 30px;
   margin: 10px;
   top: 0px;
@@ -133,4 +131,17 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.toDoListNav {
+  display: flex;
+  background: rgb(42, 46, 46);
+}
+
+.buttons {
+  display: flex;
+}
+
+.toDoHeading {
+  width: 80%;
 }
