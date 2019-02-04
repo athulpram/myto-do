@@ -159,6 +159,7 @@ const openAddItemDiv = function() {
 
 const closeAddItemDiv = function() {
   document.getElementById("addItemOverlay").style.visibility = "hidden";
+  document.getElementById("itemSummary").value = "";
 };
 
 const generateHeader = function(document, toDo) {
@@ -173,8 +174,12 @@ const generateHeader = function(document, toDo) {
   addItemBtn.className = "fas fa-plus add-item";
   addItemBtn.onclick = openAddItemDiv;
 
+  const addItemBtnDiv = document.createElement("div");
+  addItemBtnDiv.appendChild(addItemBtn);
+
   const headerDiv = document.createElement("div");
-  appendChildren(headerDiv, toDoHeading, addItemBtn);
+  headerDiv.id = "toDoHeader";
+  appendChildren(headerDiv, toDoHeading, addItemBtnDiv);
 
   return headerDiv;
 };
@@ -200,27 +205,10 @@ const loadConsole = function(document, toDoList) {
   }
 };
 
-// const generateAddItemDiv = function(document, listId) {
-//   const addItemView = createFieldSet(document, "Add New Item");
-
-//   const descBox = createTextArea(document, "text", "item", "description");
-//   descBox.id = "itemummary";
-
-//   const descLabel = createLabel(document, "Description : ");
-//   const addButton = createButton(
-//     document,
-//     ADD,
-//     addToDoItem.bind(null, document, listId)
-//   );
-
-//   appendChildren(addItemView, descLabel, descBox, addButton);
-//   return addItemView;
-// };
-
 window.onload = () => {
   loadToDoLists(document);
   getElement(document, "addToDoBtn").onclick = () => {
     createToDoList(document);
-    document.getElementById("addItemOverlay").style.visibility = "hidden";
+    document.getElementById("addToDoOverlay").style.visibility = "hidden";
   };
 };
