@@ -68,7 +68,7 @@ const initializeServer = function(fs) {
   const editToDoDesc = changeToDoDesc.bind(null, cachedData, storeUserDetails);
   const editItemDesc = changeItemDesc.bind(null, cachedData, storeUserDetails);
 
-  cachedData.loggedInUsers = {};
+  cachedData.loggedInUsers = { '"2019-02-04T07:00:01.851Z"': "a" };
 
   app.use(readCookies);
   app.use(readPostedData);

@@ -36,7 +36,7 @@ const handleLogin = function(cachedData, req, res) {
   const userData = cachedData.users;
   if (validateLoginCredentials(userData, username, password)) {
     if (!hasSession(cachedData.loggedInUsers, username)) {
-      con st sessionId = getTime();
+      const sessionId = getTime();
       addProperty(cachedData.loggedInUsers, sessionId, username);
       setCookie(res, "sessionId", sessionId);
       redirect(res, "/dashboard.html");
