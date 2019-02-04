@@ -1,7 +1,7 @@
 const { loadFiles, loadUsers } = require("./loadData.js");
 const { handleSignup, handleLogin, handleLogout } = require("./register.js");
 const { handleDashboard } = require("./dashboard.js");
-const { redirect, send, hasSession } = require("./responder.js");
+const { hasSession } = require("./responder.js");
 const { parseArgs } = require("./util/util.js");
 const {
   getToDos,
@@ -15,15 +15,15 @@ const {
   toggleDone
 } = require("./handlers.js");
 
-const WebFramework = require("./webFramework");
-const app = new WebFramework();
+const express = require('express');
+const app = express();
 const cachedData = {};
 
-const writeToFile = function(fs, filePath, fileContents) {
-  fs.writeFile(filePath, fileContents, () => {});
+const writeToFile = function (fs, filePath, fileContents) {
+  fs.writeFile(filePath, fileContents, () => { });
 };
 
-const readCookies = function(req, res, next) {
+const readCookies = function (req, res, next) {
   req.parsedCookie = {};
   let parsedCookie = req.headers.cookie;
   if (parsedCookie) {
@@ -33,7 +33,7 @@ const readCookies = function(req, res, next) {
   next();
 };
 
-const validateUser = function(cachedData, req, res, next) {
+const validateUser = function (cachedData, req, res, next) {
   const sessionId = req.parsedCookie.sessionId;
   if (hasSession(cachedData.loggedInUsers, sessionId)) {
     next();
@@ -42,7 +42,7 @@ const validateUser = function(cachedData, req, res, next) {
   requestHandler(cachedData, req, res, next);
 };
 
-const initializeServer = function(fs) {
+const initializeServer = function (fs) {
   const userData = "./private/userData.json";
 
   cachedData.publicFiles = loadFiles("./public", fs);
@@ -72,6 +72,9 @@ const initializeServer = function(fs) {
 
   app.use(readCookies);
   app.use(readPostedData);
+  app.use(express.static('public/styles'));
+  app.use(express.static('public/'));
+  app.get('/', renderHome);
   app.post("/signup", signup);
   app.post("/login", login);
   app.get("/logout", handleLogout.bind(null, cachedData));
@@ -95,22 +98,25 @@ const isFilePresent = file =>
 const requestHandler = (cachedData, req, res) => {
   const url = getFilePath(req.url);
   if (isFilePresent(url)) {
-    send(res, cachedData.publicFiles[url]);
+    res.send(cachedData.publicFiles[url]);
     return;
   }
-  send(res, cachedData.publicFiles["./public/404errorPage.html"], 404, "error");
+  const errorUrl = "./public/404errorPage.html";
+  res.status(404).send(cachedData.publicFiles[errorUrl]);
   return;
 };
 
+const renderHome = function (req, res) {
+  res.location('/index.html');
+  res.status(302);
+  res.end();
+}
+
 const getFilePath = url => {
-  if (url == "/") {
-    url = "/index.html";
-  }
-  url = "./public" + url;
-  return url;
+  return "./public" + url;
 };
 
-const readPostedData = function(req, res, next) {
+const readPostedData = function (req, res, next) {
   let postedData = "";
   req.on("data", chunk => {
     postedData = postedData + chunk;
@@ -121,6 +127,6 @@ const readPostedData = function(req, res, next) {
   });
 };
 module.exports = {
-  requestHandler: app.handleRequest.bind(app),
+  requestHandler: app,
   initializeServer
 };
