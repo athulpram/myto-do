@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div class="overlay" id="addItemOverlay">
+      <div class="overlay" id="addToDoOverlay">
         
         <div class="add-item">
           <i onclick = "closeAddItem()"class="fas fa-times"></i>
@@ -49,6 +49,17 @@
           <input class="add-item-field" id="title" type="text" name="title" placeholder="title" /></br>
           <textarea class="add-item-field" name="desc" id="desc" type="text" placeholder="description"></textarea></br>
           <button class="add-item-submit-btn" id="addToDoBtn">Add New Item</button>
+        </div>
+      </div>
+
+
+      <div class="overlay" id="addItemOverlay">
+      
+        <div class="add-item">
+          <i onclick="closeAddItemDiv()" class="fas fa-times"></i>
+          <h2 class="add-to-do-heading">Add New Item</h2>
+          <input class="add-item-field" id="itemSummary" type="text" name="Item Summary" placeholder="Summary" /></br>
+          <button class="add-item-submit-btn" id="addToDoItemBtn">Add New Item</button>
         </div>
       </div>
     </div>

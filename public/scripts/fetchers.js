@@ -25,7 +25,7 @@ const toggleItemStatus = function(document, listId, itemId) {
 };
 
 const addToDoItem = function(document, listId) {
-  const desc = document.getElementById(listId + "item").value;
+  const desc = document.getElementById("itemSummary").value;
   const jsonData = { toDoItem: { desc }, listId };
   fetcher("/addtodoitem", "POST", jsonData, loadToDoLists.bind(null, document));
 };

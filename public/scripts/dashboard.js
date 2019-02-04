@@ -3,10 +3,10 @@ const WASTEBIN = "\uD83D\uDDD1";
 const ADD = "\u2795";
 
 const openAddItem = () => {
-  document.getElementById("addItemOverlay").style.visibility = "visible";
+  document.getElementById("addToDoOverlay").style.visibility = "visible";
 };
 const closeAddItem = () => {
-  document.getElementById("addItemOverlay").style.visibility = "hidden";
+  document.getElementById("addToDoOverlay").style.visibility = "hidden";
 };
 
 const getToDoLists = function(document, toDoListDiv, myToDo) {
@@ -153,7 +153,13 @@ const generateItemsDiv = function(document, items, listId) {
   return itemsDiv;
 };
 
-const openAddItemDiv = function() {};
+const openAddItemDiv = function() {
+  document.getElementById("addItemOverlay").style.visibility = "visible";
+};
+
+const closeAddItemDiv = function() {
+  document.getElementById("addItemOverlay").style.visibility = "hidden";
+};
 
 const generateHeader = function(document, toDo) {
   const toDoHeading = document.createElement("span");
@@ -165,7 +171,7 @@ const generateHeader = function(document, toDo) {
 
   const addItemBtn = document.createElement("i");
   addItemBtn.className = "fas fa-plus add-item";
-  addItemBtn.onclick = openAddItemDiv(toDo.id);
+  addItemBtn.onclick = openAddItemDiv;
 
   const headerDiv = document.createElement("div");
   appendChildren(headerDiv, toDoHeading, addItemBtn);
@@ -177,36 +183,39 @@ const loadConsole = function(document, toDoList) {
   const consoleHeader = getElement(document, "consoleHeader");
   consoleHeader.innerHTML = "";
   consoleHeader.appendChild(generateHeader(document, toDoList));
+
+  document.getElementById("addToDoItemBtn").onclick = () => {
+    addToDoItem(document, toDoList.id);
+    closeAddItemDiv(document);
+  };
   const consoleDiv = getElement(document, "consoleArea");
   consoleDiv.innerHTML = "";
   if (toDoList) {
-    const addItemConsole = generateAddItemDiv(document, toDoList.id);
-
     const desc = document.createElement("span");
     desc.className = "toDoListDesc";
     desc.innerText = toDoList.desc;
 
     const itemsView = generateItemsDiv(document, toDoList.items, toDoList.id);
-    appendChildren(consoleDiv, desc, addItemConsole, itemsView);
+    appendChildren(consoleDiv, desc, itemsView);
   }
 };
 
-const generateAddItemDiv = function(document, listId) {
-  const addItemView = createFieldSet(document, "Add New Item");
+// const generateAddItemDiv = function(document, listId) {
+//   const addItemView = createFieldSet(document, "Add New Item");
 
-  const descBox = createTextArea(document, "text", "item", "description");
-  descBox.id = listId + "item";
+//   const descBox = createTextArea(document, "text", "item", "description");
+//   descBox.id = "itemummary";
 
-  const descLabel = createLabel(document, "Description : ");
-  const addButton = createButton(
-    document,
-    ADD,
-    addToDoItem.bind(null, document, listId)
-  );
+//   const descLabel = createLabel(document, "Description : ");
+//   const addButton = createButton(
+//     document,
+//     ADD,
+//     addToDoItem.bind(null, document, listId)
+//   );
 
-  appendChildren(addItemView, descLabel, descBox, addButton);
-  return addItemView;
-};
+//   appendChildren(addItemView, descLabel, descBox, addButton);
+//   return addItemView;
+// };
 
 window.onload = () => {
   loadToDoLists(document);
