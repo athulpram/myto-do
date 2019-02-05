@@ -176,6 +176,8 @@
   color: white;
   font-family: inherit;
   height: 83%;
+  display: flex;
+  justify-content: center;
 }
 
 .console-second-header {
@@ -192,6 +194,13 @@
   margin-left: 10px;
 }
 
+.itemsDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .itemDiv {
   display: flex;
   background: black;
@@ -199,4 +208,9 @@
   font-size: 20px;
   height: 40px;
   align-items: center;
+  width: 97%;
+}
+
+.checkbox-summary {
+  width: 100%;
 }

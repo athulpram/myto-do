@@ -55,3 +55,14 @@ const createTextArea = function(document, type, name, placeholder) {
   textArea.placeholder = placeholder;
   return textArea;
 };
+
+const createIconBtn = function(document, iconClass, onclickFunc) {
+  const iconBtn = document.createElement("i");
+  iconBtn.className = iconClass;
+  iconBtn.onclick = onclickFunc;
+  return iconBtn;
+};
+
+const createElement = function(document, tag) {
+  return document.createElement(tag);
+};

@@ -31,7 +31,7 @@
         <div class="listDiv">
           <div class="sub-heading">
             <span class="todos-title">To-Dos</span>
-            <i onclick="openAddItem()" class="fas fa-plus add-to-do"></i>
+            <i onclick="openOverlay('addToDoOverlay')" class="fas fa-plus add-to-do"></i>
           </div>
           <div id="toDoLists" class="toDoListsDiv"></div>
         </div>
@@ -46,26 +46,37 @@
 
 
       <div class="overlay" id="addToDoOverlay">
-        
+      
         <div class="add-item">
-          <i onclick = "closeAddItem()"class="fas fa-times"></i>
+          <i onclick = "closeOverlay('addToDoOverlay')"class="fas fa-times"></i>
           <h2 class="add-to-do-heading">Add New To Do</h2>
-          <input class="add-item-field" id="title" type="text" name="title" placeholder="title" /></br>
-          <textarea class="add-item-field" name="desc" id="desc" type="text" placeholder="description"></textarea></br>
+          <input class="add-item-field" id="title" type="text" name="title" placeholder="title" required/></br>
+          <textarea class="add-item-field" name="desc" id="desc" type="text" placeholder="description" required></textarea></br>
           <button class="add-item-submit-btn" id="addToDoBtn">Add New To Do</button>
         </div>
       </div>
 
 
       <div class="overlay" id="addItemOverlay">
-      
+     
         <div class="add-item">
           <i onclick="closeAddItemDiv()" class="fas fa-times"></i>
           <h2 class="add-to-do-heading">Add New Item</h2>
-          <input class="add-item-field" id="itemSummary" type="text" name="Item Summary" placeholder="Summary" /></br>
+          <input class="add-item-field" id="itemSummary" type="text" name="Item Summary" placeholder="Summary" required/></br>
           <button class="add-item-submit-btn" id="addToDoItemBtn">Add New Item</button>
         </div>
       </div>
+      </div>
+
+      <div class="overlay" id="editItemOverlay">
+        <div class="add-item">
+          <i onclick="closeEditItemDiv()" class="fas fa-times"></i>
+          <h2 class="add-to-do-heading">Edit Item</h2>
+          <input class="add-item-field" id="" type="text" name="Item Summary" placeholder="Summary" required /></br>
+          <button class="add-item-submit-btn" id="">Add New Item</button>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>

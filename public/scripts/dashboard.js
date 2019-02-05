@@ -1,50 +1,55 @@
 const PENCIL = "\u270E";
 const WASTEBIN = "\uD83D\uDDD1";
 const ADD = "\u2795";
+const EDIT_CLASS = "fas fa-edit";
+const TRASH_CLASS = "fas fa-trash-alt";
+const ADD_ITEM_CLASS = "fas fa-plus add-item";
 
-const openAddItem = () => {
-  document.getElementById("addToDoOverlay").style.visibility = "visible";
+const openOverlay = id => {
+  getElement(document, id).style.visibility = "visible";
 };
-const closeAddItem = () => {
-  document.getElementById("addToDoOverlay").style.visibility = "hidden";
+const closeOverlay = id => {
+  getElement(document, id).style.visibility = "hidden";
 };
 
-const getToDoLists = function(document, toDoListDiv, myToDo) {
-  Object.keys(myToDo).map(toDoListKey => {
-    let toDoDiv = document.createElement("div");
+const openAddItemDiv = function() {
+  openOverlay("addItemOverlay");
+};
+
+const closeAddItemDiv = function() {
+  closeOverlay("addItemOverlay");
+  getElement(document, "itemSummary").value = "";
+};
+
+const createButtons = function(editFunction, deleteFunction) {
+  const editButton = createIconBtn(document, EDIT_CLASS, editFunction);
+  const deleteButton = createIconBtn(document, TRASH_CLASS, deleteFunction);
+  const buttons = createElement(document, "div");
+  buttons.className = "buttons";
+  appendChildren(buttons, editButton, deleteButton);
+  return buttons;
+};
+
+const getToDoLists = function(document, toDoListDiv, userToDos) {
+  Object.keys(userToDos).map(toDoListKey => {
+    const currToDo = userToDos[toDoListKey];
+    const toDoDiv = createElement(document, "div");
     toDoDiv.id = toDoListKey;
-    const editConsole = loadEditConsole.bind(
-      null,
-      document,
-      myToDo[toDoListKey]
-    );
-    const editButton = document.createElement("i");
-    editButton.className = "fas fa-edit";
-    editButton.onclick = editConsole;
 
-    const deleteToDo = deleteToDoList.bind(
-      null,
-      document,
-      myToDo[toDoListKey].id
-    );
+    const editConsole = loadEditConsole.bind(null, document, currToDo);
+    const deleteToDo = deleteToDoList.bind(null, document, currToDo.id);
 
-    const deleteButton = document.createElement("i");
-    deleteButton.className = "fas fa-trash-alt";
-    deleteButton.onclick = deleteToDo;
-
-    const toDoHeading = document.createElement("div");
-    const buttons = document.createElement("div");
-    buttons.className = "buttons";
-    toDoHeading.innerText = myToDo[toDoListKey].title;
+    const toDoHeading = createElement(document, "div");
+    toDoHeading.innerText = currToDo.title;
     toDoHeading.className = "toDoHeading";
-    toDoHeading.onclick = loadConsole.bind(null, document, myToDo[toDoListKey]);
+    toDoHeading.onclick = loadConsole.bind(null, document, currToDo);
 
-    appendChildren(buttons, editButton, deleteButton);
+    const buttons = createButtons(editConsole, deleteToDo);
     appendChildren(toDoDiv, toDoHeading, buttons);
     toDoDiv.className = "toDoListNav";
     toDoListDiv.appendChild(toDoDiv);
   });
-  loadConsole(document, myToDo[Object.keys(myToDo)[0]]);
+  loadConsole(document, userToDos[Object.keys(userToDos)[0]]);
 };
 
 const loadEditConsole = function(document, toDoList) {
@@ -69,7 +74,7 @@ const loadEditConsole = function(document, toDoList) {
 };
 
 const generateEditDescDiv = function(document, list, onclickFunc) {
-  const editDescDiv = document.createElement("div");
+  const editDescDiv = createElement(document, "div");
   const descBox = createTextBox(document, list.desc, "description");
   descBox.id = "editDesc";
   const descButton = createButton(document, "submit", onclickFunc);
@@ -77,7 +82,7 @@ const generateEditDescDiv = function(document, list, onclickFunc) {
   return editDescDiv;
 };
 
-const loadItemEditConsole = function(document, toDoListId, item) {
+const loadItemEditView = function(document, toDoListId, item) {
   const consoleArea = getElement(document, "consoleArea");
   const editItemDesc = editItem.bind(null, document, toDoListId, item);
   const generateEditDescView = generateEditDescDiv(
@@ -90,7 +95,7 @@ const loadItemEditConsole = function(document, toDoListId, item) {
 };
 
 const generateEditTitleDiv = function(document, toDoList) {
-  const editTitleView = document.createElement("span");
+  const editTitleView = createElement(document, "span");
   const titleLabel = createLabel(document, "Title : ");
   const titleBox = createTextBox(document, toDoList.title, "title", "editBox");
   titleBox.id = "editTitle";
@@ -105,46 +110,37 @@ const generateEditTitleDiv = function(document, toDoList) {
 };
 
 const generateTitleDiv = function(document, title) {
-  const titleDiv = document.createElement("span");
+  const titleDiv = createElement(document, "span");
   titleDiv.innerText = title;
   return titleDiv;
 };
 
 const generateItemDiv = function(document, item, listId) {
-  const itemDiv = document.createElement("div");
+  const itemDiv = createElement(document, "div");
   itemDiv.className = "itemDiv";
   const itemDesc = generateTitleDiv(document, item.desc);
 
-  const checkBox = document.createElement("input");
+  const checkBox = createElement(document, "input");
   checkBox.type = "checkbox";
   checkBox.onclick = toggleItemStatus.bind(null, document, listId, item.id);
   checkBox.checked = item.isDone;
-  const loadEditConsole = loadItemEditConsole.bind(
-    null,
-    document,
-    listId,
-    item
-  );
-  const editItemButton = document.createElement("i");
-  editItemButton.className = "fas fa-edit";
-  editItemButton.onclick = loadEditConsole;
+
+  const checkBoxAndSummary = createElement(document, "div");
+  checkBoxAndSummary.className = "checkbox-summary";
+  appendChildren(checkBoxAndSummary, checkBox, itemDesc);
+
+  const loadEditConsole = loadItemEditView.bind(null, document, listId, item);
 
   const deleteCurrItem = deleteItem.bind(null, document, listId, item.id);
 
-  const deleteItemButton = document.createElement("i");
-  deleteItemButton.className = "fas fa-trash-alt";
-  deleteItemButton.onclick = deleteCurrItem;
-
-  const buttonDiv = document.createElement("div");
-  buttonDiv.className = "buttons";
-  appendChildren(buttonDiv, editItemButton, deleteItemButton);
-  appendChildren(itemDiv, checkBox, itemDesc, buttonDiv);
+  const buttonDiv = createButtons(loadEditConsole, deleteCurrItem);
+  appendChildren(itemDiv, checkBoxAndSummary, buttonDiv);
 
   return itemDiv;
 };
 
 const generateItemsDiv = function(document, items, listId) {
-  const itemsDiv = document.createElement("div");
+  const itemsDiv = createElement(document, "div");
   itemsDiv.className = "itemsDiv";
   Object.keys(items).forEach(itemKey => {
     itemsDiv.appendChild(generateItemDiv(document, items[itemKey], listId));
@@ -152,31 +148,20 @@ const generateItemsDiv = function(document, items, listId) {
   return itemsDiv;
 };
 
-const openAddItemDiv = function() {
-  document.getElementById("addItemOverlay").style.visibility = "visible";
-};
-
-const closeAddItemDiv = function() {
-  document.getElementById("addItemOverlay").style.visibility = "hidden";
-  document.getElementById("itemSummary").value = "";
-};
-
 const generateHeader = function(document, toDo) {
-  const toDoHeading = document.createElement("span");
+  const toDoHeading = createElement(document, "span");
   toDoHeading.innerText = `Title : ${toDo.title}`;
 
-  const title = document.createElement("span");
+  const title = createElement(document, "span");
   title.className = "toDoListTitle";
   title.innerText = toDo.title;
 
-  const addItemBtn = document.createElement("i");
-  addItemBtn.className = "fas fa-plus add-item";
-  addItemBtn.onclick = openAddItemDiv;
+  const addItemBtn = createIconBtn(document, ADD_ITEM_CLASS, openAddItemDiv);
 
-  const addItemBtnDiv = document.createElement("div");
+  const addItemBtnDiv = createElement(document, "div");
   addItemBtnDiv.appendChild(addItemBtn);
 
-  const headerDiv = document.createElement("div");
+  const headerDiv = createElement(document, "div");
   headerDiv.id = "toDoHeader";
   appendChildren(headerDiv, toDoHeading, addItemBtnDiv);
 
@@ -188,7 +173,7 @@ const loadConsole = function(document, toDoList) {
   consoleHeader.innerHTML = "";
   consoleHeader.appendChild(generateHeader(document, toDoList));
 
-  document.getElementById("addToDoItemBtn").onclick = () => {
+  getElement(document, "addToDoItemBtn").onclick = () => {
     addToDoItem(document, toDoList.id);
     closeAddItemDiv(document);
   };
@@ -197,7 +182,7 @@ const loadConsole = function(document, toDoList) {
   if (toDoList) {
     consoleDiv.innerHTML = "";
     consoleSubHeading.innerHTML = "";
-    const desc = document.createElement("span");
+    const desc = createElement(document, "span");
     desc.className = "toDoListDesc";
     desc.innerText = `Description: ${toDoList.desc}`;
 
@@ -211,6 +196,6 @@ window.onload = () => {
   loadToDoLists(document);
   getElement(document, "addToDoBtn").onclick = () => {
     createToDoList(document);
-    document.getElementById("addToDoOverlay").style.visibility = "hidden";
+    closeOverlay("addToDoOverlay");
   };
 };
