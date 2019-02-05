@@ -129,14 +129,26 @@ const generateItemDiv = function(document, item, listId) {
   checkBoxAndSummary.className = "checkbox-summary";
   appendChildren(checkBoxAndSummary, checkBox, itemDesc);
 
-  const loadEditConsole = loadItemEditView.bind(null, document, listId, item);
+  //const loadEditConsole = loadItemEditView.bind(null, document, listId, item);
 
   const deleteCurrItem = deleteItem.bind(null, document, listId, item.id);
 
-  const buttonDiv = createButtons(loadEditConsole, deleteCurrItem);
+  const buttonDiv = createButtons(
+    editItemSummaryOverlay.bind(null, document, listId, item),
+    deleteCurrItem
+  );
   appendChildren(itemDiv, checkBoxAndSummary, buttonDiv);
 
   return itemDiv;
+};
+
+const editItemSummaryOverlay = function(document, listId, item) {
+  openOverlay("editItemOverlay");
+  const editItemDesc = () => {
+    editItem(document, listId, item.id);
+    closeOverlay("editItemOverlay");
+  };
+  getElement(document, "editItemSave").onclick = editItemDesc;
 };
 
 const generateItemsDiv = function(document, items, listId) {
@@ -195,6 +207,7 @@ const loadConsole = function(document, toDoList) {
 window.onload = () => {
   loadToDoLists(document);
   getElement(document, "addToDoBtn").onclick = () => {
+    console.log("is it called??????????");
     createToDoList(document);
     closeOverlay("addToDoOverlay");
   };

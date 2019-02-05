@@ -70,10 +70,10 @@
 
       <div class="overlay" id="editItemOverlay">
         <div class="add-item">
-          <i onclick="closeEditItemDiv()" class="fas fa-times"></i>
+          <i onclick="closeOverlay('editItemOverlay')" class="fas fa-times"></i>
           <h2 class="add-to-do-heading">Edit Item</h2>
-          <input class="add-item-field" id="" type="text" name="Item Summary" placeholder="Summary" required /></br>
-          <button class="add-item-submit-btn" id="">Add New Item</button>
+          <input class="add-item-field" id="editDesc" type="text" name="Item Summary" placeholder="Summary" required /></br>
+          <button class="add-item-submit-btn" id="editItemSave">Save</button>
         </div>
       </div>
 

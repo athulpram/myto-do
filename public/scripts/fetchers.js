@@ -30,9 +30,9 @@ const addToDoItem = function(document, listId) {
   fetcher("/addtodoitem", "POST", jsonData, loadToDoLists.bind(null, document));
 };
 
-const editItem = function(document, listId, item) {
+const editItem = function(document, listId, itemId) {
   const desc = document.getElementById("editDesc").value;
-  const jsonData = { listId, itemId: item.id, desc };
+  const jsonData = { listId, itemId, desc };
   fetcher(
     "/changeitemdesc",
     "POST",
