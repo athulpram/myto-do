@@ -125,21 +125,20 @@ const generateItemDiv = function(document, item, listId) {
     listId,
     item
   );
-  const editItemButton = createButton(
-    document,
-    PENCIL,
-    loadEditConsole,
-    "iconButton"
-  );
-  const deleteCurrItem = deleteItem.bind(null, document, listId, item.id);
-  const deleteItemButton = createButton(
-    document,
-    WASTEBIN,
-    deleteCurrItem,
-    "iconButton"
-  );
+  const editItemButton = document.createElement("i");
+  editItemButton.className = "fas fa-edit";
+  editItemButton.onclick = loadEditConsole;
 
-  appendChildren(itemDiv, checkBox, itemDesc, deleteItemButton, editItemButton);
+  const deleteCurrItem = deleteItem.bind(null, document, listId, item.id);
+
+  const deleteItemButton = document.createElement("i");
+  deleteItemButton.className = "fas fa-trash-alt";
+  deleteItemButton.onclick = deleteCurrItem;
+
+  const buttonDiv = document.createElement("div");
+  buttonDiv.className = "buttons";
+  appendChildren(buttonDiv, editItemButton, deleteItemButton);
+  appendChildren(itemDiv, checkBox, itemDesc, buttonDiv);
 
   return itemDiv;
 };
@@ -194,14 +193,17 @@ const loadConsole = function(document, toDoList) {
     closeAddItemDiv(document);
   };
   const consoleDiv = getElement(document, "consoleArea");
-  consoleDiv.innerHTML = "";
+  const consoleSubHeading = getElement(document, "secondHeader");
   if (toDoList) {
+    consoleDiv.innerHTML = "";
+    consoleSubHeading.innerHTML = "";
     const desc = document.createElement("span");
     desc.className = "toDoListDesc";
-    desc.innerText = toDoList.desc;
+    desc.innerText = `Description: ${toDoList.desc}`;
 
     const itemsView = generateItemsDiv(document, toDoList.items, toDoList.id);
-    appendChildren(consoleDiv, desc, itemsView);
+    appendChildren(consoleSubHeading, desc);
+    appendChildren(consoleDiv, itemsView);
   }
 };
 
